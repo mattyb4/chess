@@ -8,16 +8,16 @@ package chess;
  */
 public class ChessMove {
 
-    private final ChessPosition startPosition;
-    private final ChessPosition endPostion;
-    private final ChessPiece.PieceType promotionPiece;
+    private ChessPosition startPosition;
+    private ChessPosition endPosition;
+    private ChessPiece.PieceType promotionPiece;
 
 
 
     public ChessMove(ChessPosition startPosition, ChessPosition endPosition,
                      ChessPiece.PieceType promotionPiece) {
         this.startPosition = startPosition;
-        this.endPostion = endPosition;
+        this.endPosition = endPosition;
         this.promotionPiece = promotionPiece;
     }
 
@@ -32,7 +32,7 @@ public class ChessMove {
      * @return ChessPosition of ending location
      */
     public ChessPosition getEndPosition() {
-        return endPostion;
+        return endPosition;
     }
 
     /**
