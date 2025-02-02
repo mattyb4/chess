@@ -48,7 +48,10 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        return new ArrayList<>();
+        Collection<ChessMove> validMoves = new ArrayList<>();
+        MoveCalculator bishopCalculator = new BishopMoveCalc();
+        validMoves.addAll(bishopCalculator.calcMoves(board, myPosition));
+        return validMoves;
     }
 
     @Override
