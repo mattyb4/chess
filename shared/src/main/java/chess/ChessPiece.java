@@ -63,6 +63,6 @@ public class ChessPiece {
 
     @Override
     public String toString() {
-        return super.toString();
+        return "in ChessPiece toString method";
     }
 }
