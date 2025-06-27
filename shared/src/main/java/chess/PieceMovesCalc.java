@@ -5,5 +5,4 @@ import java.util.ArrayList;
 public interface PieceMovesCalc {
 
     Collection<ChessMove> calculateMoves(ChessBoard board, ChessPosition startPosition);
-
 }

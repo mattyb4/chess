@@ -2,7 +2,6 @@ package chess;
 import java.util.Collection;
 import java.util.ArrayList;
 
-import static java.lang.Math.abs;
 
 public class BishopMovesCalc implements PieceMovesCalc {
     @Override
@@ -19,6 +18,8 @@ public class BishopMovesCalc implements PieceMovesCalc {
             newY = newY+1;
             var newPosition = new ChessPosition(newX,newY);
             bishopMoves.add(new ChessMove(currentPosition,newPosition,null));
+
+            if(board.getPiece(newPosition) != null) break;
         }
         newX = x;
         newY = y;
@@ -29,6 +30,8 @@ public class BishopMovesCalc implements PieceMovesCalc {
             newY = newY + 1;
             var newPosition = new ChessPosition(newX,newY);
             bishopMoves.add(new ChessMove(currentPosition,newPosition,null));
+
+            if(board.getPiece(newPosition) != null) break;
         }
         newX = x;
         newY = y;
@@ -39,6 +42,8 @@ public class BishopMovesCalc implements PieceMovesCalc {
             newY = newY - 1;
             var newPosition = new ChessPosition(newX,newY);
             bishopMoves.add(new ChessMove(currentPosition,newPosition,null));
+
+            if(board.getPiece(newPosition) != null) break;
         }
         newX = x;
         newY = y;
@@ -49,12 +54,9 @@ public class BishopMovesCalc implements PieceMovesCalc {
             newY = newY - 1;
             var newPosition = new ChessPosition(newX,newY);
             bishopMoves.add(new ChessMove(currentPosition,newPosition,null));
-        }
 
-        //var testPosition = new ChessPosition(2,3);
-        //bishopMoves.add(new ChessMove(currentPosition,testPosition,null));
-        //var test2 = new ChessPosition(9,9);
-        //bishopMoves.add(new ChessMove(currentPosition,test2,null));
+            if(board.getPiece(newPosition) != null) break;
+        }
 
         return bishopMoves;
     }
