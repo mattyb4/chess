@@ -54,7 +54,10 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        return new BishopMovesCalc().calculateMoves(board, myPosition);
+
+        if (type == PieceType.BISHOP) return new BishopMovesCalc().calculateMoves(board, myPosition);
+        if (type == PieceType.ROOK) return new RookMovesCalc().calculateMoves(board, myPosition);
+        else return null;
     }
 
     @Override
