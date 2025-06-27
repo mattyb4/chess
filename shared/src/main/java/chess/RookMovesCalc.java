@@ -13,39 +13,22 @@ public class RookMovesCalc implements PieceMovesCalc {
         int newY = y;
         var myPiece = board.getPiece(currentPosition);
 
-        //move straight up
-
+        //move up
         while (newX < 8) {
             newX++;
             var newPosition = new ChessPosition(newX,newY);
-            System.out.println("moving up");
-            System.out.println(newX);
-            System.out.println(new ChessMove(currentPosition,newPosition,null));
+            //check if piece hits another piece
             if(board.getPiece(newPosition) != null) {
                 if(board.getPiece(newPosition).getTeamColor() == myPiece.getTeamColor()){
-                  break;
+                  break; //stop short of hitting own piece
                 }
                 rookMoves.add(new ChessMove(currentPosition,newPosition,null));
-                break;
+                break; //capture opposing piece
             }
             rookMoves.add(new ChessMove(currentPosition,newPosition,null));
 
         }
-
-        /*for (int i = newX + 1; i<8; i++){
-            var newPosition = new ChessPosition(i+1,newY+1);
-            System.out.println("checking space");
-            ChessPiece piece = board.getPiece(newPosition);
-            System.out.println("moving up");
-            System.out.println(new ChessMove(currentPosition,newPosition,null));
-            if (piece != null) {
-                if(piece.getTeamColor() != myPiece.getTeamColor()) {
-                    rookMoves.add(new ChessMove(currentPosition, newPosition, null));
-                }
-                break;
-            }
-            rookMoves.add(new ChessMove(currentPosition, newPosition, null));
-        }*/
+        //reset position to starting position
         newX = x;
         newY = y;
 
@@ -53,53 +36,47 @@ public class RookMovesCalc implements PieceMovesCalc {
         while (newY > 1) {
             newY--;
             var newPosition = new ChessPosition(newX,newY);
-            System.out.println("moving left");
-            System.out.println(new ChessMove(currentPosition,newPosition,null));
+            //check if piece hits another piece
             if(board.getPiece(newPosition) != null) {
                 if(board.getPiece(newPosition).getTeamColor() == myPiece.getTeamColor()){
-                    break;
+                    break; //stop short of hitting own piece
                 }
             }
             rookMoves.add(new ChessMove(currentPosition,newPosition,null));
-
-            if(board.getPiece(newPosition) != null) break;
+            if(board.getPiece(newPosition) != null) break; //capture opposing piece
 
         }
-        newX = x;
+        newX = x; //reset position to starting position
         newY = y;
 
         //move right
         while (newY < 8) {
             newY++;
             var newPosition = new ChessPosition(newX,newY);
-            System.out.println("moving right");
-            System.out.println(new ChessMove(currentPosition,newPosition,null));
+            //check if piece hits another piece
             if(board.getPiece(newPosition) != null) {
                 if(board.getPiece(newPosition).getTeamColor() == myPiece.getTeamColor()){
-                    break;
+                    break; //stop short of hitting own piece
                 }
             }
             rookMoves.add(new ChessMove(currentPosition,newPosition,null));
-
-            if(board.getPiece(newPosition) != null) break;
+            if(board.getPiece(newPosition) != null) break; //capture opposing piece
         }
-        newX = x;
+        newX = x; //reset position to starting position
         newY = y;
 
         //move down
         while (newX > 1) {
             newX = newX-1;
             var newPosition = new ChessPosition(newX,newY);
-            System.out.println("moving down");
-            System.out.println(new ChessMove(currentPosition,newPosition,null));
+            //check if piece hits another piece
             if(board.getPiece(newPosition) != null) {
                 if(board.getPiece(newPosition).getTeamColor() == myPiece.getTeamColor()){
-                    break;
+                    break; //stop short of hitting own piece
                 }
             }
             rookMoves.add(new ChessMove(currentPosition,newPosition,null));
-
-            if(board.getPiece(newPosition) != null) break;
+            if(board.getPiece(newPosition) != null) break; //capture opposing piece
 
         }
 
