@@ -19,12 +19,9 @@ public class KnightMovesCalc implements PieceMovesCalc {
             newX = newX + 2;
             newY = newY + 1;
             var newPosition = new ChessPosition(newX,newY);
-            System.out.println("moving right, up two");
-
             if(board.getPiece(newPosition) != null) {
                 if(board.getPiece(newPosition).getTeamColor() != myPiece.getTeamColor()){
                     knightMoves.add(new ChessMove(currentPosition,newPosition,null));
-                    System.out.println(new ChessMove(currentPosition,newPosition,null));
                 }
             }
             else knightMoves.add(new ChessMove(currentPosition,newPosition,null));
@@ -37,12 +34,9 @@ public class KnightMovesCalc implements PieceMovesCalc {
             newX = newX + 1;
             newY = newY + 2;
             var newPosition = new ChessPosition(newX,newY);
-            System.out.println("moving up, right two");
-
             if(board.getPiece(newPosition) != null) {
                 if(board.getPiece(newPosition).getTeamColor() != myPiece.getTeamColor()){
                     knightMoves.add(new ChessMove(currentPosition,newPosition,null));
-                    System.out.println(new ChessMove(currentPosition,newPosition,null));
                 }
             }
             else knightMoves.add(new ChessMove(currentPosition,newPosition,null));
@@ -55,12 +49,9 @@ public class KnightMovesCalc implements PieceMovesCalc {
             newX = newX + 2;
             newY = newY - 1;
             var newPosition = new ChessPosition(newX,newY);
-            System.out.println("moving left, up two");
-
             if(board.getPiece(newPosition) != null) {
                 if(board.getPiece(newPosition).getTeamColor() != myPiece.getTeamColor()){
                     knightMoves.add(new ChessMove(currentPosition,newPosition,null));
-                    System.out.println(new ChessMove(currentPosition,newPosition,null));
                 }
             }
             else knightMoves.add(new ChessMove(currentPosition,newPosition,null));
@@ -74,12 +65,9 @@ public class KnightMovesCalc implements PieceMovesCalc {
             newX = newX + 1;
             newY = newY - 2;
             var newPosition = new ChessPosition(newX,newY);
-            System.out.println("moving up, left two");
-
             if(board.getPiece(newPosition) != null) {
                 if(board.getPiece(newPosition).getTeamColor() != myPiece.getTeamColor()){
                     knightMoves.add(new ChessMove(currentPosition,newPosition,null));
-                    System.out.println(new ChessMove(currentPosition,newPosition,null));
                 }
             }
             else knightMoves.add(new ChessMove(currentPosition,newPosition,null));
@@ -92,12 +80,9 @@ public class KnightMovesCalc implements PieceMovesCalc {
             newX = newX - 1;
             newY = newY + 2;
             var newPosition = new ChessPosition(newX,newY);
-            System.out.println("moving down, right two");
-
             if(board.getPiece(newPosition) != null) {
                 if(board.getPiece(newPosition).getTeamColor() != myPiece.getTeamColor()){
                     knightMoves.add(new ChessMove(currentPosition,newPosition,null));
-                    System.out.println(new ChessMove(currentPosition,newPosition,null));
                 }
             }
             else knightMoves.add(new ChessMove(currentPosition,newPosition,null));
@@ -110,12 +95,9 @@ public class KnightMovesCalc implements PieceMovesCalc {
             newX = newX - 2;
             newY = newY + 1;
             var newPosition = new ChessPosition(newX,newY);
-            System.out.println("moving right, down two");
-
             if(board.getPiece(newPosition) != null) {
                 if(board.getPiece(newPosition).getTeamColor() != myPiece.getTeamColor()){
                     knightMoves.add(new ChessMove(currentPosition,newPosition,null));
-                    System.out.println(new ChessMove(currentPosition,newPosition,null));
                 }
             }
             else knightMoves.add(new ChessMove(currentPosition,newPosition,null));
@@ -129,12 +111,9 @@ public class KnightMovesCalc implements PieceMovesCalc {
             newX = newX - 2;
             newY = newY - 1;
             var newPosition = new ChessPosition(newX,newY);
-            System.out.println("moving left, down two");
-            System.out.println(new ChessMove(currentPosition,newPosition,null));
             if(board.getPiece(newPosition) != null) {
                 if(board.getPiece(newPosition).getTeamColor() != myPiece.getTeamColor()){
                     knightMoves.add(new ChessMove(currentPosition,newPosition,null));
-                    System.out.println(new ChessMove(currentPosition,newPosition,null));
                 }
             }
             else knightMoves.add(new ChessMove(currentPosition,newPosition,null));
@@ -148,12 +127,9 @@ public class KnightMovesCalc implements PieceMovesCalc {
             newX = newX - 1;
             newY = newY - 2;
             var newPosition = new ChessPosition(newX,newY);
-            System.out.println("moving down, left two");
-
             if(board.getPiece(newPosition) != null) {
                 if(board.getPiece(newPosition).getTeamColor() != myPiece.getTeamColor()){
                     knightMoves.add(new ChessMove(currentPosition,newPosition,null));
-                    System.out.println(new ChessMove(currentPosition,newPosition,null));
                 }
             }
             else knightMoves.add(new ChessMove(currentPosition,newPosition,null));
