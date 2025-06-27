@@ -48,18 +48,10 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        return BishopMovesCalc.calcBishopMoves(board, myPosition);
+        return new BishopMovesCalc().calculateMoves(board, myPosition);
     }
 
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
 
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
-    }
 
     @Override
     public String toString() {
