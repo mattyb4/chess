@@ -58,6 +58,7 @@ public class ChessPiece {
         if (type == PieceType.BISHOP) return new BishopMovesCalc().calculateMoves(board, myPosition);
         if (type == PieceType.ROOK) return new RookMovesCalc().calculateMoves(board, myPosition);
         if (type == PieceType.QUEEN) return new QueenMovesCalc().calculateMoves(board, myPosition);
+        if (type == PieceType.KNIGHT) return new KnightMovesCalc().calculateMoves(board, myPosition);
         else return null;
     }
 
