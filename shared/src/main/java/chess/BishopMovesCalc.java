@@ -11,12 +11,18 @@ public class BishopMovesCalc implements PieceMovesCalc {
         ArrayList<ChessMove> bishopMoves = new ArrayList<>();
         int newX = x;
         int newY = y;
+        var myPiece = board.getPiece(currentPosition);
 
         //move up and to the right
         while (newX > 0 && newX < 8 && newY > 0 && newY < 8) {
             newX = newX+1;
             newY = newY+1;
             var newPosition = new ChessPosition(newX,newY);
+            if(board.getPiece(newPosition) != null) {
+                if(board.getPiece(newPosition).getTeamColor() == myPiece.getTeamColor()){
+                    break;
+                }
+            }
             bishopMoves.add(new ChessMove(currentPosition,newPosition,null));
 
             if(board.getPiece(newPosition) != null) break;
@@ -29,6 +35,11 @@ public class BishopMovesCalc implements PieceMovesCalc {
             newX = newX - 1;
             newY = newY + 1;
             var newPosition = new ChessPosition(newX,newY);
+            if(board.getPiece(newPosition) != null) {
+                if(board.getPiece(newPosition).getTeamColor() == myPiece.getTeamColor()){
+                    break;
+                }
+            }
             bishopMoves.add(new ChessMove(currentPosition,newPosition,null));
 
             if(board.getPiece(newPosition) != null) break;
@@ -41,6 +52,11 @@ public class BishopMovesCalc implements PieceMovesCalc {
             newX = newX + 1;
             newY = newY - 1;
             var newPosition = new ChessPosition(newX,newY);
+            if(board.getPiece(newPosition) != null) {
+                if(board.getPiece(newPosition).getTeamColor() == myPiece.getTeamColor()){
+                    break;
+                }
+            }
             bishopMoves.add(new ChessMove(currentPosition,newPosition,null));
 
             if(board.getPiece(newPosition) != null) break;
@@ -53,6 +69,11 @@ public class BishopMovesCalc implements PieceMovesCalc {
             newX = newX - 1;
             newY = newY - 1;
             var newPosition = new ChessPosition(newX,newY);
+            if(board.getPiece(newPosition) != null) {
+                if(board.getPiece(newPosition).getTeamColor() == myPiece.getTeamColor()){
+                    break;
+                }
+            }
             bishopMoves.add(new ChessMove(currentPosition,newPosition,null));
 
             if(board.getPiece(newPosition) != null) break;
