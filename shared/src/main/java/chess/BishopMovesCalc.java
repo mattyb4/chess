@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import static java.lang.Math.abs;
 
 public class BishopMovesCalc implements PieceMovesCalc {
-    public static Collection<ChessMove> calcBishopMoves(ChessBoard board, ChessPosition currentPosition) {
+    @Override
+    public Collection<ChessMove> calculateMoves(ChessBoard board, ChessPosition currentPosition) {
         int x = currentPosition.getRow();
         int y = currentPosition.getColumn();
         ArrayList<ChessMove> bishopMoves = new ArrayList<>();
@@ -55,6 +56,6 @@ public class BishopMovesCalc implements PieceMovesCalc {
         //var test2 = new ChessPosition(9,9);
         //bishopMoves.add(new ChessMove(currentPosition,test2,null));
 
-        return PieceMovesCalc.calcMoves(board, currentPosition, bishopMoves);
+        return bishopMoves;
     }
 }
