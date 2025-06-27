@@ -21,6 +21,8 @@ public class QueenMovesCalc implements PieceMovesCalc {
             newX = newX+1;
             newY = newY+1;
             var newPosition = new ChessPosition(newX,newY);
+            System.out.println("moving up right");
+            System.out.println(new ChessMove(currentPosition,newPosition,null));
             if(board.getPiece(newPosition) != null) {
                 if(board.getPiece(newPosition).getTeamColor() == myPiece.getTeamColor()){
                     break;
@@ -38,6 +40,8 @@ public class QueenMovesCalc implements PieceMovesCalc {
             newX = newX - 1;
             newY = newY + 1;
             var newPosition = new ChessPosition(newX,newY);
+            System.out.println("moving up left");
+            System.out.println(new ChessMove(currentPosition,newPosition,null));
             if(board.getPiece(newPosition) != null) {
                 if(board.getPiece(newPosition).getTeamColor() == myPiece.getTeamColor()){
                     break;
@@ -55,6 +59,8 @@ public class QueenMovesCalc implements PieceMovesCalc {
             newX = newX + 1;
             newY = newY - 1;
             var newPosition = new ChessPosition(newX,newY);
+            System.out.println("moving down right");
+            System.out.println(new ChessMove(currentPosition,newPosition,null));
             if(board.getPiece(newPosition) != null) {
                 if(board.getPiece(newPosition).getTeamColor() == myPiece.getTeamColor()){
                     break;
@@ -72,6 +78,8 @@ public class QueenMovesCalc implements PieceMovesCalc {
             newX = newX - 1;
             newY = newY - 1;
             var newPosition = new ChessPosition(newX,newY);
+            System.out.println("moving down left");
+            System.out.println(new ChessMove(currentPosition,newPosition,null));
             if(board.getPiece(newPosition) != null) {
                 if(board.getPiece(newPosition).getTeamColor() == myPiece.getTeamColor()){
                     break;
@@ -81,6 +89,8 @@ public class QueenMovesCalc implements PieceMovesCalc {
 
             if(board.getPiece(newPosition) != null) break;
         }
+        newX = x;
+        newY = y;
 
 
         //rook calcs
@@ -88,6 +98,8 @@ public class QueenMovesCalc implements PieceMovesCalc {
         while (newX < 8) {
             newX++;
             var newPosition = new ChessPosition(newX,newY);
+            System.out.println("moving up");
+            System.out.println(new ChessMove(currentPosition,newPosition,null));
             //check if piece hits another piece
             if(board.getPiece(newPosition) != null) {
                 if(board.getPiece(newPosition).getTeamColor() == myPiece.getTeamColor()){
@@ -107,6 +119,8 @@ public class QueenMovesCalc implements PieceMovesCalc {
         while (newY > 1) {
             newY--;
             var newPosition = new ChessPosition(newX,newY);
+            System.out.println("moving left");
+            System.out.println(new ChessMove(currentPosition,newPosition,null));
             //check if piece hits another piece
             if(board.getPiece(newPosition) != null) {
                 if(board.getPiece(newPosition).getTeamColor() == myPiece.getTeamColor()){
@@ -124,6 +138,8 @@ public class QueenMovesCalc implements PieceMovesCalc {
         while (newY < 8) {
             newY++;
             var newPosition = new ChessPosition(newX,newY);
+            System.out.println("moving right");
+            System.out.println(new ChessMove(currentPosition,newPosition,null));
             //check if piece hits another piece
             if(board.getPiece(newPosition) != null) {
                 if(board.getPiece(newPosition).getTeamColor() == myPiece.getTeamColor()){
@@ -140,6 +156,8 @@ public class QueenMovesCalc implements PieceMovesCalc {
         while (newX > 1) {
             newX = newX-1;
             var newPosition = new ChessPosition(newX,newY);
+            System.out.println("moving down");
+            System.out.println(new ChessMove(currentPosition,newPosition,null));
             //check if piece hits another piece
             if(board.getPiece(newPosition) != null) {
                 if(board.getPiece(newPosition).getTeamColor() == myPiece.getTeamColor()){
