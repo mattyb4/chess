@@ -13,20 +13,19 @@ public class KnightMovesCalc implements PieceMovesCalc {
         int newY = y;
         var myPiece = board.getPiece(currentPosition);
 
-
         //move right, up two
         if(newX > 0 && newX < 7 && newY > 0 && newY < 8) {
             newX = newX + 2;
             newY = newY + 1;
             var newPosition = new ChessPosition(newX,newY);
-            if(board.getPiece(newPosition) != null) {
+            if(board.getPiece(newPosition) != null) { //check for obstacle piece
                 if(board.getPiece(newPosition).getTeamColor() != myPiece.getTeamColor()){
-                    knightMoves.add(new ChessMove(currentPosition,newPosition,null));
+                    knightMoves.add(new ChessMove(currentPosition,newPosition,null)); //capture piece
                 }
             }
             else knightMoves.add(new ChessMove(currentPosition,newPosition,null));
         }
-        newX = x;
+        newX = x; //reset to original position
         newY = y;
 
         //move up, right two
@@ -136,8 +135,6 @@ public class KnightMovesCalc implements PieceMovesCalc {
         }
         newX = x;
         newY = y;
-
-
 
         return knightMoves;
     }

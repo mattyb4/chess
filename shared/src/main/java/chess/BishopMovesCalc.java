@@ -18,16 +18,15 @@ public class BishopMovesCalc implements PieceMovesCalc {
             newX = newX+1;
             newY = newY+1;
             var newPosition = new ChessPosition(newX,newY);
-            if(board.getPiece(newPosition) != null) {
+            if(board.getPiece(newPosition) != null) {//check for obstacle piece
                 if(board.getPiece(newPosition).getTeamColor() == myPiece.getTeamColor()){
-                    break;
+                    break;//stop short of own piece
                 }
             }
             bishopMoves.add(new ChessMove(currentPosition,newPosition,null));
-
-            if(board.getPiece(newPosition) != null) break;
+            if(board.getPiece(newPosition) != null) break;//capture piece
         }
-        newX = x;
+        newX = x; //reset to original position
         newY = y;
 
         //move up and to the left
@@ -41,7 +40,6 @@ public class BishopMovesCalc implements PieceMovesCalc {
                 }
             }
             bishopMoves.add(new ChessMove(currentPosition,newPosition,null));
-
             if(board.getPiece(newPosition) != null) break;
         }
         newX = x;
@@ -58,7 +56,6 @@ public class BishopMovesCalc implements PieceMovesCalc {
                 }
             }
             bishopMoves.add(new ChessMove(currentPosition,newPosition,null));
-
             if(board.getPiece(newPosition) != null) break;
         }
         newX = x;
@@ -75,7 +72,6 @@ public class BishopMovesCalc implements PieceMovesCalc {
                 }
             }
             bishopMoves.add(new ChessMove(currentPosition,newPosition,null));
-
             if(board.getPiece(newPosition) != null) break;
         }
 

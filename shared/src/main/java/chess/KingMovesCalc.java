@@ -19,12 +19,12 @@ public class KingMovesCalc implements PieceMovesCalc {
             var newPosition = new ChessPosition(newX,newY);
             if(board.getPiece(newPosition) != null) {
                 if(board.getPiece(newPosition).getTeamColor() != myPiece.getTeamColor()){
-                    kingMoves.add(new ChessMove(currentPosition,newPosition,null));
+                    kingMoves.add(new ChessMove(currentPosition,newPosition,null)); //capture piece
                 }
             }
-            else kingMoves.add(new ChessMove(currentPosition,newPosition,null));
+            else kingMoves.add(new ChessMove(currentPosition,newPosition,null)); //stop short of piece
         }
-        newX = x;
+        newX = x; //reset values to original coordinates
         newY = y;
 
         //move up right
@@ -126,9 +126,6 @@ public class KingMovesCalc implements PieceMovesCalc {
             }
             else kingMoves.add(new ChessMove(currentPosition,newPosition,null));
         }
-        newX = x;
-        newY = y;
-
 
         return kingMoves;
     }

@@ -23,14 +23,13 @@ public class QueenMovesCalc implements PieceMovesCalc {
             var newPosition = new ChessPosition(newX,newY);
             if(board.getPiece(newPosition) != null) {
                 if(board.getPiece(newPosition).getTeamColor() == myPiece.getTeamColor()){
-                    break;
+                    break; //stop short of own piece
                 }
             }
             queenMoves.add(new ChessMove(currentPosition,newPosition,null));
-
-            if(board.getPiece(newPosition) != null) break;
+            if(board.getPiece(newPosition) != null) break; //capture piece
         }
-        newX = x;
+        newX = x;//reset to original position
         newY = y;
 
         //move up and to the left
@@ -44,7 +43,6 @@ public class QueenMovesCalc implements PieceMovesCalc {
                 }
             }
             queenMoves.add(new ChessMove(currentPosition,newPosition,null));
-
             if(board.getPiece(newPosition) != null) break;
         }
         newX = x;
@@ -61,7 +59,6 @@ public class QueenMovesCalc implements PieceMovesCalc {
                 }
             }
             queenMoves.add(new ChessMove(currentPosition,newPosition,null));
-
             if(board.getPiece(newPosition) != null) break;
         }
         newX = x;
@@ -78,7 +75,6 @@ public class QueenMovesCalc implements PieceMovesCalc {
                 }
             }
             queenMoves.add(new ChessMove(currentPosition,newPosition,null));
-
             if(board.getPiece(newPosition) != null) break;
         }
         newX = x;
@@ -109,48 +105,44 @@ public class QueenMovesCalc implements PieceMovesCalc {
         while (newY > 1) {
             newY--;
             var newPosition = new ChessPosition(newX,newY);
-            //check if piece hits another piece
             if(board.getPiece(newPosition) != null) {
                 if(board.getPiece(newPosition).getTeamColor() == myPiece.getTeamColor()){
-                    break; //stop short of hitting own piece
+                    break;
                 }
             }
             queenMoves.add(new ChessMove(currentPosition,newPosition,null));
-            if(board.getPiece(newPosition) != null) break; //capture opposing piece
+            if(board.getPiece(newPosition) != null) break;
 
         }
-        newX = x; //reset position to starting position
+        newX = x;
         newY = y;
 
         //move right
         while (newY < 8) {
             newY++;
             var newPosition = new ChessPosition(newX,newY);
-            //check if piece hits another piece
             if(board.getPiece(newPosition) != null) {
                 if(board.getPiece(newPosition).getTeamColor() == myPiece.getTeamColor()){
-                    break; //stop short of hitting own piece
+                    break;
                 }
             }
             queenMoves.add(new ChessMove(currentPosition,newPosition,null));
-            if(board.getPiece(newPosition) != null) break; //capture opposing piece
+            if(board.getPiece(newPosition) != null) break;
         }
-        newX = x; //reset position to starting position
+        newX = x;
         newY = y;
 
         //move down
         while (newX > 1) {
             newX = newX-1;
             var newPosition = new ChessPosition(newX,newY);
-            //check if piece hits another piece
             if(board.getPiece(newPosition) != null) {
                 if(board.getPiece(newPosition).getTeamColor() == myPiece.getTeamColor()){
-                    break; //stop short of hitting own piece
+                    break;
                 }
             }
             queenMoves.add(new ChessMove(currentPosition,newPosition,null));
-            if(board.getPiece(newPosition) != null) break; //capture opposing piece
-
+            if(board.getPiece(newPosition) != null) break;
         }
 
         return queenMoves;
