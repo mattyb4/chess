@@ -203,7 +203,7 @@ public class PawnMovesCalc implements PieceMovesCalc {
                 pawnMoves.add(new ChessMove(currentPosition,newPosition, ChessPiece.PieceType.QUEEN));
                 pawnMoves.add(new ChessMove(currentPosition,newPosition, ChessPiece.PieceType.BISHOP));
                 pawnMoves.add(new ChessMove(currentPosition,newPosition, ChessPiece.PieceType.KNIGHT));
-                pawnMoves.add(new ChessMove(currentPosition,newPosition, ChessPiece.PieceType.ROOK);
+                pawnMoves.add(new ChessMove(currentPosition,newPosition, ChessPiece.PieceType.ROOK));
             }
         }
 
