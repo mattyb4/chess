@@ -60,7 +60,7 @@ public class KnightMovesCalc implements PieceMovesCalc {
         newY = y;
 
         //move up, left two
-        if(newX > 0 && newX < 8 && newY > 1 && newY <= 8) {
+        if(newX > 0 && newX < 8 && newY > 2 && newY <= 8) {
             newX = newX + 1;
             newY = newY - 2;
             var newPosition = new ChessPosition(newX,newY);
@@ -122,7 +122,7 @@ public class KnightMovesCalc implements PieceMovesCalc {
         newY = y;
 
         //move down, left two
-        if(newX > 1 && newX <= 8 && newY > 1 && newY <= 8) {
+        if(newX > 1 && newX <= 8 && newY > 2 && newY <= 8) {
             newX = newX - 1;
             newY = newY - 2;
             var newPosition = new ChessPosition(newX,newY);
