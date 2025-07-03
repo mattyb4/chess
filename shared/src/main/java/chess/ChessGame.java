@@ -81,6 +81,7 @@ public class ChessGame {
                 if(currentPiece != null) {
                     if (currentPiece.getTeamColor() == teamColor && currentPiece.getPieceType() == ChessPiece.PieceType.KING) {
                         kingPosition = new ChessPosition(row, col);
+                        System.out.println(kingPosition);
                         break;
                     }
                 }
@@ -89,10 +90,13 @@ public class ChessGame {
         for(int row = 1; row <= 8; row++) {
             for(int col = 1; col <= 8; col++) {
                 var currentPosition = new ChessPosition(row,col);
-                var enemyPiece = board.getPiece(new ChessPosition(row,col));
+                var enemyPiece = board.getPiece(currentPosition);
                 if(enemyPiece != null) {
-                    for (ChessMove possibleMoves : enemyPiece.pieceMoves(board, currentPosition)) {
-                        if (possibleMoves.getEndPosition() == kingPosition) {
+                    for (var possibleMoves : enemyPiece.pieceMoves(board, currentPosition)) {
+                        System.out.println("in possible moves for loop");
+                        System.out.println(possibleMoves.getEndPosition());
+                        if (possibleMoves.getEndPosition().equals(kingPosition)) {
+                            System.out.println("is in check");
                             return true;
                         }
                     }
@@ -100,8 +104,7 @@ public class ChessGame {
 
             }
         }
-
-
+        System.out.println("is not in check");
         return false;
     }
 
