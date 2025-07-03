@@ -93,10 +93,7 @@ public class ChessGame {
                 var enemyPiece = board.getPiece(currentPosition);
                 if(enemyPiece != null) {
                     for (var possibleMoves : enemyPiece.pieceMoves(board, currentPosition)) {
-                        System.out.println("in possible moves for loop");
-                        System.out.println(possibleMoves.getEndPosition());
                         if (possibleMoves.getEndPosition().equals(kingPosition)) {
-                            System.out.println("is in check");
                             return true;
                         }
                     }
@@ -104,7 +101,6 @@ public class ChessGame {
 
             }
         }
-        System.out.println("is not in check");
         return false;
     }
 
