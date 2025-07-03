@@ -79,6 +79,8 @@ public class ChessBoard {
 
     @Override
     public String toString() {
-        return "in ChessBoard toString method";
+        return "ChessBoard{" +
+                "squares=" + Arrays.toString(squares) +
+                '}';
     }
 }

@@ -51,8 +51,29 @@ public class ChessGame {
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         //get the piece type at startPosition, then call move calc for that type. Don't add anything that turns isInCheck() true
         ChessPiece piece = board.getPiece(startPosition);
-        Collection<ChessMove> validMoves = piece.pieceMoves(board, startPosition);
+        var potentialMoves = piece.pieceMoves(board, startPosition);
+        ArrayList<ChessMove> validMoves = new ArrayList<>();
+        for (var move : potentialMoves){
+            var movingPiece = board.getPiece(move.getStartPosition());
+            var capturedPiece = board.getPiece(move.getEndPosition());
 
+            board.addPiece(move.getEndPosition(),movingPiece);
+            board.addPiece(move.getStartPosition(),null);
+
+            boolean inCheck = isInCheck(teamTurn);
+            System.out.println(move);
+            isInCheck(teamTurn);
+            board.addPiece(move.getStartPosition(), movingPiece);
+            board.addPiece(move.getEndPosition(),capturedPiece);
+
+            if(!inCheck){
+                validMoves.add(move);
+                System.out.println("not in check. added valid move");
+            }
+            else {
+                System.out.println("in check. invalid move. Did not add");
+            }
+        }
         return validMoves;
     }
 
@@ -63,7 +84,19 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        throw new RuntimeException("Not implemented");
+        ChessPosition startPosition = move.getStartPosition();
+        ChessPosition endPosition = move.getEndPosition();
+        var movingPiece = board.getPiece(startPosition);
+
+        board.addPiece(endPosition,movingPiece);
+        board.addPiece(startPosition,null);
+
+        if(getTeamTurn() == TeamColor.WHITE) {
+            setTeamTurn(TeamColor.BLACK);
+        }
+        else {
+            setTeamTurn(TeamColor.WHITE);
+        }
     }
 
     /**
@@ -74,6 +107,7 @@ public class ChessGame {
      */
     public boolean isInCheck(TeamColor teamColor) {
         //true if possible endPosition of any piece includes King's current position
+        //find position of King
         var kingPosition = new ChessPosition(1,1);
         for(int row = 1; row <= 8; row++){
             for(int col = 1; col <= 8; col++) {
@@ -87,13 +121,15 @@ public class ChessGame {
                 }
             }
         }
+        //Check for any endPositions that match up with the King's current position
         for(int row = 1; row <= 8; row++) {
             for(int col = 1; col <= 8; col++) {
                 var currentPosition = new ChessPosition(row,col);
                 var enemyPiece = board.getPiece(currentPosition);
-                if(enemyPiece != null) {
+                if(enemyPiece != null && enemyPiece.getTeamColor() != teamColor) {
                     for (var possibleMoves : enemyPiece.pieceMoves(board, currentPosition)) {
                         if (possibleMoves.getEndPosition().equals(kingPosition)) {
+                            System.out.println(enemyPiece);
                             return true;
                         }
                     }
@@ -113,6 +149,7 @@ public class ChessGame {
     public boolean isInCheckmate(TeamColor teamColor) {
         //isInCheck is true and validMoves is null for every position on the board
         boolean noValidMoves = true;
+        System.out.println("checkmate not implemented yet");
         //set up for loop to check every position for valid moves and set noValidMoves to false if any are found
         return isInCheck(teamColor) && noValidMoves;
     }
@@ -127,6 +164,7 @@ public class ChessGame {
     public boolean isInStalemate(TeamColor teamColor) {
         //isInCheck is false and validMoves is null for every position on the board
         boolean noValidMoves = true;
+        System.out.println("Stalemate not implemented yet");
         //set up for loop to check every position for valid moves and set noValidMoves to false if any are found
         return !isInCheck(teamColor) && noValidMoves;
     }

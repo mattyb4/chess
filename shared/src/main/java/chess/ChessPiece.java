@@ -80,6 +80,9 @@ public class ChessPiece {
 
     @Override
     public String toString() {
-        return "in ChessPiece toString method";
+        return "ChessPiece{" +
+                "pieceColor=" + pieceColor +
+                ", type=" + type +
+                '}';
     }
 }
