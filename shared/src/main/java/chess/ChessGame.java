@@ -1,5 +1,6 @@
 package chess;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -9,7 +10,7 @@ import java.util.Collection;
  * signature of the existing methods.
  */
 public class ChessGame {
-
+    private TeamColor teamTurn;
     public ChessGame() {
 
     }
@@ -18,7 +19,7 @@ public class ChessGame {
      * @return Which team's turn it is
      */
     public TeamColor getTeamTurn() {
-        throw new RuntimeException("Not implemented");
+        return teamTurn;
     }
 
     /**
@@ -27,7 +28,7 @@ public class ChessGame {
      * @param team the team whose turn it is
      */
     public void setTeamTurn(TeamColor team) {
-        throw new RuntimeException("Not implemented");
+        teamTurn = team;
     }
 
     /**
@@ -46,7 +47,8 @@ public class ChessGame {
      * startPosition
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-        throw new RuntimeException("Not implemented");
+        ArrayList<ChessMove> validMoves = new ArrayList<>();
+        return validMoves;
     }
 
     /**
@@ -66,6 +68,7 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
+        //true validMoves of any position includes King's current position
         throw new RuntimeException("Not implemented");
     }
 
@@ -76,7 +79,10 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        //isInCheck is true and validMoves is null for every position on the board
+        boolean noValidMoves = true;
+        //set up for loop to check every position for valid moves and set noValidMoves to false if any are found
+        return isInCheck(teamColor) && noValidMoves;
     }
 
     /**
@@ -87,7 +93,10 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        //isInCheck is false and validMoves is null for every position on the board
+        boolean noValidMoves = true;
+        //set up for loop to check every position for valid moves and set noValidMoves to false if any are found
+        return !isInCheck(teamColor) && noValidMoves;
     }
 
     /**
