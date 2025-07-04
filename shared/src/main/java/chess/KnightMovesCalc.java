@@ -6,136 +6,93 @@ import java.util.Collection;
 public class KnightMovesCalc implements PieceMovesCalc {
     @Override
     public Collection<ChessMove> calculateMoves(ChessBoard board, ChessPosition currentPosition) {
-        int x = currentPosition.getRow();
-        int y = currentPosition.getColumn();
+        int row = currentPosition.getRow();
+        int col = currentPosition.getColumn();
         ArrayList<ChessMove> knightMoves = new ArrayList<>();
-        int newX = x;
-        int newY = y;
-        var myPiece = board.getPiece(currentPosition);
-
+        int newRow = row;
+        int newCol = col;
         //move right, up two
-        if(newX > 0 && newX < 7 && newY > 0 && newY < 8) {
-            newX = newX + 2;
-            newY = newY + 1;
-            var newPosition = new ChessPosition(newX,newY);
-            if(board.getPiece(newPosition) != null) { //check for obstacle piece
-                if(board.getPiece(newPosition).getTeamColor() != myPiece.getTeamColor()){
-                    knightMoves.add(new ChessMove(currentPosition,newPosition,null)); //capture piece
-                }
-            }
-            else knightMoves.add(new ChessMove(currentPosition,newPosition,null));
+        if(newRow < 7 && newCol < 8) {
+            newRow = newRow + 2;
+            newCol = newCol + 1;
+            var newPosition = new ChessPosition(newRow, newCol);
+            moveKnight(knightMoves,board,currentPosition,newPosition);
         }
-        newX = x; //reset to original position
-        newY = y;
-
+        newRow = row; //reset to original position
+        newCol = col;
         //move up, right two
-        if(newX > 0 && newX < 8 && newY > 0 && newY < 7) {
-            newX = newX + 1;
-            newY = newY + 2;
-            var newPosition = new ChessPosition(newX,newY);
-            if(board.getPiece(newPosition) != null) {
-                if(board.getPiece(newPosition).getTeamColor() != myPiece.getTeamColor()){
-                    knightMoves.add(new ChessMove(currentPosition,newPosition,null));
-                }
-            }
-            else knightMoves.add(new ChessMove(currentPosition,newPosition,null));
+        if(newRow < 8 && newCol < 7) {
+            newRow = newRow + 1;
+            newCol = newCol + 2;
+            var newPosition = new ChessPosition(newRow, newCol);
+            moveKnight(knightMoves,board,currentPosition,newPosition);
         }
-        newX = x;
-        newY = y;
-
+        newRow = row;
+        newCol = col;
         //move left, up two
-        if(newX > 0 && newX < 7 && newY > 1 && newY <= 8) {
-            newX = newX + 2;
-            newY = newY - 1;
-            var newPosition = new ChessPosition(newX,newY);
-            if(board.getPiece(newPosition) != null) {
-                if(board.getPiece(newPosition).getTeamColor() != myPiece.getTeamColor()){
-                    knightMoves.add(new ChessMove(currentPosition,newPosition,null));
-                }
-            }
-            else knightMoves.add(new ChessMove(currentPosition,newPosition,null));
-
+        if(newRow < 7 && newCol > 1) {
+            newRow = newRow + 2;
+            newCol = newCol - 1;
+            var newPosition = new ChessPosition(newRow, newCol);
+            moveKnight(knightMoves,board,currentPosition,newPosition);
         }
-        newX = x;
-        newY = y;
-
+        newRow = row;
+        newCol = col;
         //move up, left two
-        if(newX > 0 && newX < 8 && newY > 2 && newY <= 8) {
-            newX = newX + 1;
-            newY = newY - 2;
-            var newPosition = new ChessPosition(newX,newY);
-            if(board.getPiece(newPosition) != null) {
-                if(board.getPiece(newPosition).getTeamColor() != myPiece.getTeamColor()){
-                    knightMoves.add(new ChessMove(currentPosition,newPosition,null));
-                }
-            }
-            else knightMoves.add(new ChessMove(currentPosition,newPosition,null));
+        if(newRow < 8 && newCol > 2) {
+            newRow = newRow + 1;
+            newCol = newCol - 2;
+            var newPosition = new ChessPosition(newRow, newCol);
+            moveKnight(knightMoves,board,currentPosition,newPosition);
         }
-        newX = x;
-        newY = y;
-
+        newRow = row;
+        newCol = col;
         //move down, right two
-        if(newX > 1 && newX <= 8 && newY > 0 && newY < 7) {
-            newX = newX - 1;
-            newY = newY + 2;
-            var newPosition = new ChessPosition(newX,newY);
-            if(board.getPiece(newPosition) != null) {
-                if(board.getPiece(newPosition).getTeamColor() != myPiece.getTeamColor()){
-                    knightMoves.add(new ChessMove(currentPosition,newPosition,null));
-                }
-            }
-            else knightMoves.add(new ChessMove(currentPosition,newPosition,null));
+        if(newRow > 1 && newCol < 7) {
+            newRow = newRow - 1;
+            newCol = newCol + 2;
+            var newPosition = new ChessPosition(newRow, newCol);
+            moveKnight(knightMoves,board,currentPosition,newPosition);
         }
-        newX = x;
-        newY = y;
-
+        newRow = row;
+        newCol = col;
         //move right, down two
-        if(newX > 2 && newX <= 8 && newY > 0 && newY < 8) {
-            newX = newX - 2;
-            newY = newY + 1;
-            var newPosition = new ChessPosition(newX,newY);
-            if(board.getPiece(newPosition) != null) {
-                if(board.getPiece(newPosition).getTeamColor() != myPiece.getTeamColor()){
-                    knightMoves.add(new ChessMove(currentPosition,newPosition,null));
-                }
-            }
-            else knightMoves.add(new ChessMove(currentPosition,newPosition,null));
-
+        if(newRow > 2 && newCol < 8) {
+            newRow = newRow - 2;
+            newCol = newCol + 1;
+            var newPosition = new ChessPosition(newRow, newCol);
+            moveKnight(knightMoves,board,currentPosition,newPosition);
         }
-        newX = x;
-        newY = y;
-
+        newRow = row;
+        newCol = col;
         //move left, down two
-        if(newX > 2 && newX <= 8 && newY > 1 && newY <= 8) {
-            newX = newX - 2;
-            newY = newY - 1;
-            var newPosition = new ChessPosition(newX,newY);
-            if(board.getPiece(newPosition) != null) {
-                if(board.getPiece(newPosition).getTeamColor() != myPiece.getTeamColor()){
-                    knightMoves.add(new ChessMove(currentPosition,newPosition,null));
-                }
-            }
-            else knightMoves.add(new ChessMove(currentPosition,newPosition,null));
-
+        if(newRow > 2 && newCol > 1) {
+            newRow = newRow - 2;
+            newCol = newCol - 1;
+            var newPosition = new ChessPosition(newRow, newCol);
+            moveKnight(knightMoves,board,currentPosition,newPosition);
         }
-        newX = x;
-        newY = y;
+        newRow = row;
+        newCol = col;
 
         //move down, left two
-        if(newX > 1 && newX <= 8 && newY > 2 && newY <= 8) {
-            newX = newX - 1;
-            newY = newY - 2;
-            var newPosition = new ChessPosition(newX,newY);
-            if(board.getPiece(newPosition) != null) {
-                if(board.getPiece(newPosition).getTeamColor() != myPiece.getTeamColor()){
-                    knightMoves.add(new ChessMove(currentPosition,newPosition,null));
-                }
-            }
-            else knightMoves.add(new ChessMove(currentPosition,newPosition,null));
+        if(newRow > 1 && newCol > 2) {
+            newRow = newRow - 1;
+            newCol = newCol - 2;
+            var newPosition = new ChessPosition(newRow, newCol);
+            moveKnight(knightMoves,board,currentPosition,newPosition);
         }
-        newX = x;
-        newY = y;
-
         return knightMoves;
+    }
+    public void moveKnight(Collection<ChessMove> knightMoves, ChessBoard board, ChessPosition currentPosition, ChessPosition newPosition){
+        var myPiece = board.getPiece(currentPosition);
+        if(board.getPiece(newPosition) != null) {
+            if(board.getPiece(newPosition).getTeamColor() != myPiece.getTeamColor()){
+                knightMoves.add(new ChessMove(currentPosition,newPosition,null));
+            }
+        }
+        else {
+            knightMoves.add(new ChessMove(currentPosition, newPosition, null));
+        }
     }
 }
