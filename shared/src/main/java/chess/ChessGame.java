@@ -51,6 +51,9 @@ public class ChessGame {
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         //get the piece type at startPosition, then call move calc for that type. Don't add anything that turns isInCheck() true
         ChessPiece piece = board.getPiece(startPosition);
+        if(piece == null) {
+            return null;
+        }
         var currentTurn = piece.getTeamColor();
         var potentialMoves = piece.pieceMoves(board, startPosition);
         ArrayList<ChessMove> validMoves = new ArrayList<>();
@@ -145,8 +148,26 @@ public class ChessGame {
     public boolean isInCheckmate(TeamColor teamColor) {
         //isInCheck is true and validMoves is null for every position on the board
         boolean noValidMoves = true;
-        System.out.println("checkmate not implemented yet");
         //set up for loop to check every position for valid moves and set noValidMoves to false if any are found
+        for(int row = 1; row <= 8; row++) {
+            for(int col = 1; col <= 8; col++) {
+                var currentPosition = new ChessPosition(row,col);
+                var currentPiece = board.getPiece(currentPosition);
+                if(currentPiece != null) {
+                    if (currentPiece.getTeamColor() == teamColor) {
+                        if (!validMoves(currentPosition).isEmpty()) {
+                            System.out.println("valid move found for " + board.getPiece(currentPosition));
+                            System.out.println("valid moves are " + validMoves(currentPosition));
+                            noValidMoves = false;
+                        } else {
+                            System.out.println("no valid moves at " + currentPosition);
+                        }
+                    }
+                }
+            }
+        }
+        System.out.println("isIncheck is " + isInCheck(teamColor));
+        System.out.println("noValidMoves is " + noValidMoves);
         return isInCheck(teamColor) && noValidMoves;
     }
 
@@ -160,8 +181,26 @@ public class ChessGame {
     public boolean isInStalemate(TeamColor teamColor) {
         //isInCheck is false and validMoves is null for every position on the board
         boolean noValidMoves = true;
-        System.out.println("Stalemate not implemented yet");
         //set up for loop to check every position for valid moves and set noValidMoves to false if any are found
+        for(int row = 1; row <= 8; row++) {
+            for(int col = 1; col <= 8; col++) {
+                var currentPosition = new ChessPosition(row,col);
+                var currentPiece = board.getPiece(currentPosition);
+                if(currentPiece != null) {
+                    if (currentPiece.getTeamColor() == teamColor) {
+                        if (!validMoves(currentPosition).isEmpty()) {
+                            System.out.println("valid move found for " + board.getPiece(currentPosition));
+                            System.out.println("valid moves are " + validMoves(currentPosition));
+                            noValidMoves = false;
+                        } else {
+                            System.out.println("no valid moves at " + currentPosition);
+                        }
+                    }
+                }
+            }
+        }
+        System.out.println("isIncheck is " + isInCheck(teamColor));
+        System.out.println("noValidMoves is " + noValidMoves);
         return !isInCheck(teamColor) && noValidMoves;
     }
 
