@@ -39,7 +39,9 @@ public class RookMovesCalc implements PieceMovesCalc {
                 }
             }
             rookMoves.add(new ChessMove(currentPosition,newPosition,null));
-            if(board.getPiece(newPosition) != null) break;
+            if(board.getPiece(newPosition) != null) {
+                break;
+            }
         }
         newRow = row;
         newCol = col;
@@ -53,7 +55,9 @@ public class RookMovesCalc implements PieceMovesCalc {
                 }
             }
             rookMoves.add(new ChessMove(currentPosition,newPosition,null));
-            if(board.getPiece(newPosition) != null) break;
+            if(board.getPiece(newPosition) != null) {
+                break;
+            }
         }
         newRow = row;
         newCol = col;
@@ -67,7 +71,9 @@ public class RookMovesCalc implements PieceMovesCalc {
                 }
             }
             rookMoves.add(new ChessMove(currentPosition,newPosition,null));
-            if(board.getPiece(newPosition) != null) break;
+            if(board.getPiece(newPosition) != null) {
+                break;
+            }
         }
         return rookMoves;
     }
