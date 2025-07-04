@@ -158,23 +158,7 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
-        //isInCheck is true and validMoves is null for every position on the board
-        boolean noValidMoves = true;
-        //set up for loop to check every position for valid moves and set noValidMoves to false if any are found
-        for(int row = 1; row <= 8; row++) {
-            for(int col = 1; col <= 8; col++) {
-                var currentPosition = new ChessPosition(row,col);
-                var currentPiece = board.getPiece(currentPosition);
-                if(currentPiece != null) {
-                    if (currentPiece.getTeamColor() == teamColor) {
-                        if (!validMoves(currentPosition).isEmpty()) {
-                            noValidMoves = false;
-                        }
-                    }
-                }
-            }
-        }
-        return isInCheck(teamColor) && noValidMoves;
+        return isInCheck(teamColor) && checkValidMoves(teamColor);
     }
 
     /**
@@ -185,7 +169,9 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
-        //isInCheck is false and validMoves is null for every position on the board
+        return !isInCheck(teamColor) && checkValidMoves(teamColor);
+    }
+    public boolean checkValidMoves(TeamColor teamColor){
         boolean noValidMoves = true;
         //set up for loop to check every position for valid moves and set noValidMoves to false if any are found
         for(int row = 1; row <= 8; row++) {
@@ -201,9 +187,8 @@ public class ChessGame {
                 }
             }
         }
-        return !isInCheck(teamColor) && noValidMoves;
+        return noValidMoves;
     }
-
     /**
      * Sets this game's chessboard with a given board
      *
