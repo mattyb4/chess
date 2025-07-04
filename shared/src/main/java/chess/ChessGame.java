@@ -57,23 +57,17 @@ public class ChessGame {
         for (var move : potentialMoves){
             var movingPiece = board.getPiece(move.getStartPosition());
             var capturedPiece = board.getPiece(move.getEndPosition());
-            System.out.println("moving piece is " + movingPiece);
 
             board.addPiece(move.getEndPosition(),movingPiece);
             board.addPiece(move.getStartPosition(),null);
 
             boolean inCheck = isInCheck(currentTurn);
-            System.out.println(move);
-            isInCheck(teamTurn);
+
             board.addPiece(move.getStartPosition(), movingPiece);
             board.addPiece(move.getEndPosition(),capturedPiece);
 
             if(!inCheck){
                 validMoves.add(move);
-                System.out.println("not in check. added valid move");
-            }
-            else {
-                System.out.println("in check. invalid move. Did not add");
             }
         }
         return validMoves;
@@ -110,7 +104,6 @@ public class ChessGame {
     public boolean isInCheck(TeamColor teamColor) {
         //true if possible endPosition of any piece includes King's current position
         //find position of King
-        System.out.println("current turn is " + teamColor);
         var kingPosition = new ChessPosition(1,1);
         outer:
         for(int row = 1; row <= 8; row++){
@@ -119,7 +112,6 @@ public class ChessGame {
                 if(currentPiece != null) {
                     if (currentPiece.getTeamColor() == teamColor && currentPiece.getPieceType() == ChessPiece.PieceType.KING) {
                         kingPosition = new ChessPosition(row, col);
-                        System.out.println("king position is " + kingPosition);
                         break outer;
                     }
 
@@ -134,7 +126,6 @@ public class ChessGame {
                 if(enemyPiece != null && enemyPiece.getTeamColor() != teamColor) {
                     for (var possibleMoves : enemyPiece.pieceMoves(board, currentPosition)) {
                         if (possibleMoves.getEndPosition().equals(kingPosition)) {
-                            System.out.println("enemy piece is " + enemyPiece);
                             return true;
                         }
                     }
