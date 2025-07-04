@@ -74,7 +74,6 @@ public class KnightMovesCalc implements PieceMovesCalc {
         }
         newRow = row;
         newCol = col;
-
         //move down, left two
         if(newRow > 1 && newCol > 2) {
             newRow = newRow - 1;
