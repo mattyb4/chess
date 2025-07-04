@@ -55,13 +55,31 @@ public class ChessPiece {
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
 
-        if (type == PieceType.BISHOP) return new BishopMovesCalc().calculateMoves(board, myPosition);
-        if (type == PieceType.ROOK) return new RookMovesCalc().calculateMoves(board, myPosition);
-        if (type == PieceType.QUEEN) return new QueenMovesCalc().calculateMoves(board, myPosition);
-        if (type == PieceType.KNIGHT) return new KnightMovesCalc().calculateMoves(board, myPosition);
-        if (type == PieceType.PAWN) return new PawnMovesCalc().calculateMoves(board, myPosition);
-        if (type == PieceType.KING) return new KingMovesCalc().calculateMoves(board, myPosition);
-        else return null;
+        if(type == PieceType.BISHOP) {
+            return new BishopMovesCalc().calculateMoves(board, myPosition);
+        }
+        if(type == PieceType.ROOK) {
+            return new RookMovesCalc().calculateMoves(board, myPosition);
+        }
+        if(type == PieceType.QUEEN) {
+            Collection<ChessMove> queenMoves = new ArrayList<>();
+            queenMoves.addAll(new RookMovesCalc().calculateMoves(board,myPosition));
+            queenMoves.addAll(new BishopMovesCalc().calculateMoves(board,myPosition));
+            return queenMoves;
+
+        }
+        if(type == PieceType.KNIGHT) {
+            return new KnightMovesCalc().calculateMoves(board, myPosition);
+        }
+        if(type == PieceType.KING) {
+            return new KingMovesCalc().calculateMoves(board, myPosition);
+        }
+        if(type == PieceType.PAWN) {
+            return new PawnMovesCalc().calculateMoves(board, myPosition);
+        }
+        else {
+            return null;
+        }
     }
 
     @Override
