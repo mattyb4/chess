@@ -138,14 +138,14 @@ public class ChessGame {
             for(int col = 1; col <= 8; col++) {
                 var currentPosition = new ChessPosition(row,col);
                 var enemyPiece = board.getPiece(currentPosition);
-                if(enemyPiece != null && enemyPiece.getTeamColor() != teamColor) {
-                    for (var possibleMoves : enemyPiece.pieceMoves(board, currentPosition)) {
-                        if (possibleMoves.getEndPosition().equals(kingPosition)) {
-                            return true;
-                        }
+                if(enemyPiece == null || enemyPiece.getTeamColor() == teamColor) {
+                    continue;
+                }
+                for (var possibleMoves : enemyPiece.pieceMoves(board, currentPosition)) {
+                    if (possibleMoves.getEndPosition().equals(kingPosition)) {
+                        return true;
                     }
                 }
-
             }
         }
         return false;
@@ -178,11 +178,12 @@ public class ChessGame {
             for(int col = 1; col <= 8; col++) {
                 var currentPosition = new ChessPosition(row,col);
                 var currentPiece = board.getPiece(currentPosition);
-                if(currentPiece != null) {
-                    if (currentPiece.getTeamColor() == teamColor) {
-                        if (!validMoves(currentPosition).isEmpty()) {
-                            noValidMoves = false;
-                        }
+                if(currentPiece == null || currentPiece.getTeamColor() != teamColor) {
+                    continue;
+                }
+                if (currentPiece.getTeamColor() == teamColor) {
+                    if (!validMoves(currentPosition).isEmpty()) {
+                        noValidMoves = false;
                     }
                 }
             }
