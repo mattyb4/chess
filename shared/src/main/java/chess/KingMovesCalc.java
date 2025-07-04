@@ -6,127 +6,85 @@ import java.util.Collection;
 public class KingMovesCalc implements PieceMovesCalc {
     @Override
     public Collection<ChessMove> calculateMoves(ChessBoard board, ChessPosition currentPosition) {
-        int x = currentPosition.getRow();
-        int y = currentPosition.getColumn();
+        int row = currentPosition.getRow();
+        int col = currentPosition.getColumn();
         ArrayList<ChessMove> kingMoves = new ArrayList<>();
-        int newX = x;
-        int newY = y;
+        int newRow = row;
+        int newCol = col;
         var myPiece = board.getPiece(currentPosition);
-
         //move up
-        if(newX < 8) {
-            newX = newX + 1;
-            var newPosition = new ChessPosition(newX,newY);
-            if(board.getPiece(newPosition) != null) {
-                if(board.getPiece(newPosition).getTeamColor() != myPiece.getTeamColor()){
-                    kingMoves.add(new ChessMove(currentPosition,newPosition,null)); //capture piece
-                }
-            }
-            else kingMoves.add(new ChessMove(currentPosition,newPosition,null)); //stop short of piece
+        if(newRow < 8) {
+            newRow++;
+            var newPosition = new ChessPosition(newRow, newCol);
+            moveKing(kingMoves,board,currentPosition,newPosition);
         }
-        newX = x; //reset values to original coordinates
-        newY = y;
-
+        newRow = row; //reset values to original coordinates
         //move up right
-        if(newX < 8 && newY < 8) {
-            newX = newX + 1;
-            newY = newY + 1;
-            var newPosition = new ChessPosition(newX,newY);
-            if(board.getPiece(newPosition) != null) {
-                if(board.getPiece(newPosition).getTeamColor() != myPiece.getTeamColor()){
-                    kingMoves.add(new ChessMove(currentPosition,newPosition,null));
-                }
-            }
-            else kingMoves.add(new ChessMove(currentPosition,newPosition,null));
+        if(newRow < 8 && newCol < 8) {
+            newRow++;
+            newCol++;
+            var newPosition = new ChessPosition(newRow, newCol);
+            moveKing(kingMoves,board,currentPosition,newPosition);
         }
-        newX = x;
-        newY = y;
-
+        newRow = row;
+        newCol = col;
         //move up left
-        if(newX < 8 && newY > 1) {
-            newX = newX + 1;
-            newY = newY - 1;
-            var newPosition = new ChessPosition(newX,newY);
-            if(board.getPiece(newPosition) != null) {
-                if(board.getPiece(newPosition).getTeamColor() != myPiece.getTeamColor()){
-                    kingMoves.add(new ChessMove(currentPosition,newPosition,null));
-                }
-            }
-            else kingMoves.add(new ChessMove(currentPosition,newPosition,null));
+        if(newRow < 8 && newCol > 1) {
+            newRow++;
+            newCol--;
+            var newPosition = new ChessPosition(newRow, newCol);
+            moveKing(kingMoves,board,currentPosition,newPosition);
         }
-        newX = x;
-        newY = y;
-
+        newRow = row;
+        newCol = col;
         //move right
-        if(newY < 8) {
-            newY = newY + 1;
-            var newPosition = new ChessPosition(newX,newY);
-            if(board.getPiece(newPosition) != null) {
-                if(board.getPiece(newPosition).getTeamColor() != myPiece.getTeamColor()){
-                    kingMoves.add(new ChessMove(currentPosition,newPosition,null));
-                }
-            }
-            else kingMoves.add(new ChessMove(currentPosition,newPosition,null));
+        if(newCol < 8) {
+            newCol++;
+            var newPosition = new ChessPosition(newRow, newCol);
+            moveKing(kingMoves,board,currentPosition,newPosition);
         }
-        newX = x;
-        newY = y;
-
+        newCol = col;
         //move left
-        if(newY > 1) {
-            newY = newY - 1;
-            var newPosition = new ChessPosition(newX,newY);
-            if(board.getPiece(newPosition) != null) {
-                if(board.getPiece(newPosition).getTeamColor() != myPiece.getTeamColor()){
-                    kingMoves.add(new ChessMove(currentPosition,newPosition,null));
-                }
-            }
-            else kingMoves.add(new ChessMove(currentPosition,newPosition,null));
+        if(newCol > 1) {
+            newCol--;
+            var newPosition = new ChessPosition(newRow, newCol);
+            moveKing(kingMoves,board,currentPosition,newPosition);
         }
-        newX = x;
-        newY = y;
-
+        newCol = col;
         //move down
-        if(newX > 1) {
-            newX = newX - 1;
-            var newPosition = new ChessPosition(newX,newY);
-            if(board.getPiece(newPosition) != null) {
-                if(board.getPiece(newPosition).getTeamColor() != myPiece.getTeamColor()){
-                    kingMoves.add(new ChessMove(currentPosition,newPosition,null));
-                }
-            }
-            else kingMoves.add(new ChessMove(currentPosition,newPosition,null));
+        if(newRow > 1) {
+            newRow--;
+            var newPosition = new ChessPosition(newRow, newCol);
+            moveKing(kingMoves,board,currentPosition,newPosition);
         }
-        newX = x;
-        newY = y;
-
+        newRow = row;
         //move down right
-        if(newX > 1 && newY < 8) {
-            newX = newX - 1;
-            newY = newY + 1;
-            var newPosition = new ChessPosition(newX,newY);
-            if(board.getPiece(newPosition) != null) {
-                if(board.getPiece(newPosition).getTeamColor() != myPiece.getTeamColor()){
-                    kingMoves.add(new ChessMove(currentPosition,newPosition,null));
-                }
-            }
-            else kingMoves.add(new ChessMove(currentPosition,newPosition,null));
+        if(newRow > 1 && newCol < 8) {
+            newRow--;
+            newCol++;
+            var newPosition = new ChessPosition(newRow, newCol);
+            moveKing(kingMoves,board,currentPosition,newPosition);
         }
-        newX = x;
-        newY = y;
-
+        newRow = row;
+        newCol = col;
         //move down left
-        if(newX > 1 && newY > 1) {
-            newX = newX - 1;
-            newY = newY - 1;
-            var newPosition = new ChessPosition(newX,newY);
-            if(board.getPiece(newPosition) != null) {
-                if(board.getPiece(newPosition).getTeamColor() != myPiece.getTeamColor()){
-                    kingMoves.add(new ChessMove(currentPosition,newPosition,null));
-                }
-            }
-            else kingMoves.add(new ChessMove(currentPosition,newPosition,null));
+        if(newRow > 1 && newCol > 1) {
+            newRow--;
+            newCol--;
+            var newPosition = new ChessPosition(newRow, newCol);
+            moveKing(kingMoves,board,currentPosition,newPosition);
         }
-
         return kingMoves;
+    }
+    public void moveKing(Collection<ChessMove> kingMoves,ChessBoard board, ChessPosition currentPosition, ChessPosition newPosition) {
+        var myPiece = board.getPiece(currentPosition);
+        if(board.getPiece(newPosition) != null) {
+            if(board.getPiece(newPosition).getTeamColor() != myPiece.getTeamColor()){
+                kingMoves.add(new ChessMove(currentPosition,newPosition,null));
+            }
+        }
+        else {
+            kingMoves.add(new ChessMove(currentPosition, newPosition, null));
+        }
     }
 }
