@@ -51,16 +51,18 @@ public class ChessGame {
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         //get the piece type at startPosition, then call move calc for that type. Don't add anything that turns isInCheck() true
         ChessPiece piece = board.getPiece(startPosition);
+        var currentTurn = piece.getTeamColor();
         var potentialMoves = piece.pieceMoves(board, startPosition);
         ArrayList<ChessMove> validMoves = new ArrayList<>();
         for (var move : potentialMoves){
             var movingPiece = board.getPiece(move.getStartPosition());
             var capturedPiece = board.getPiece(move.getEndPosition());
+            System.out.println("moving piece is " + movingPiece);
 
             board.addPiece(move.getEndPosition(),movingPiece);
             board.addPiece(move.getStartPosition(),null);
 
-            boolean inCheck = isInCheck(teamTurn);
+            boolean inCheck = isInCheck(currentTurn);
             System.out.println(move);
             isInCheck(teamTurn);
             board.addPiece(move.getStartPosition(), movingPiece);
@@ -108,16 +110,19 @@ public class ChessGame {
     public boolean isInCheck(TeamColor teamColor) {
         //true if possible endPosition of any piece includes King's current position
         //find position of King
+        System.out.println("current turn is " + teamColor);
         var kingPosition = new ChessPosition(1,1);
+        outer:
         for(int row = 1; row <= 8; row++){
             for(int col = 1; col <= 8; col++) {
                 var currentPiece = board.getPiece(new ChessPosition(row,col));
                 if(currentPiece != null) {
                     if (currentPiece.getTeamColor() == teamColor && currentPiece.getPieceType() == ChessPiece.PieceType.KING) {
                         kingPosition = new ChessPosition(row, col);
-                        System.out.println(kingPosition);
-                        break;
+                        System.out.println("king position is " + kingPosition);
+                        break outer;
                     }
+
                 }
             }
         }
@@ -129,7 +134,7 @@ public class ChessGame {
                 if(enemyPiece != null && enemyPiece.getTeamColor() != teamColor) {
                     for (var possibleMoves : enemyPiece.pieceMoves(board, currentPosition)) {
                         if (possibleMoves.getEndPosition().equals(kingPosition)) {
-                            System.out.println(enemyPiece);
+                            System.out.println("enemy piece is " + enemyPiece);
                             return true;
                         }
                     }
