@@ -14,7 +14,7 @@ public class KingMovesCalc implements PieceMovesCalc {
         var myPiece = board.getPiece(currentPosition);
 
         //move up
-        if(newX > 0 && newX < 8 && newY > 0 && newY < 8) {
+        if(newX < 8) {
             newX = newX + 1;
             var newPosition = new ChessPosition(newX,newY);
             if(board.getPiece(newPosition) != null) {
@@ -28,7 +28,7 @@ public class KingMovesCalc implements PieceMovesCalc {
         newY = y;
 
         //move up right
-        if(newX > 0 && newX < 8 && newY > 0 && newY < 8) {
+        if(newX < 8 && newY < 8) {
             newX = newX + 1;
             newY = newY + 1;
             var newPosition = new ChessPosition(newX,newY);
@@ -43,7 +43,7 @@ public class KingMovesCalc implements PieceMovesCalc {
         newY = y;
 
         //move up left
-        if(newX > 0 && newX < 8 && newY > 1 && newY < 8) {
+        if(newX < 8 && newY > 1) {
             newX = newX + 1;
             newY = newY - 1;
             var newPosition = new ChessPosition(newX,newY);
@@ -58,7 +58,7 @@ public class KingMovesCalc implements PieceMovesCalc {
         newY = y;
 
         //move right
-        if(newX > 0 && newX < 8 && newY > 0 && newY < 8) {
+        if(newY < 8) {
             newY = newY + 1;
             var newPosition = new ChessPosition(newX,newY);
             if(board.getPiece(newPosition) != null) {
@@ -72,7 +72,7 @@ public class KingMovesCalc implements PieceMovesCalc {
         newY = y;
 
         //move left
-        if(newX > 0 && newX < 8 && newY > 1 && newY < 8) {
+        if(newY > 1) {
             newY = newY - 1;
             var newPosition = new ChessPosition(newX,newY);
             if(board.getPiece(newPosition) != null) {
@@ -86,7 +86,7 @@ public class KingMovesCalc implements PieceMovesCalc {
         newY = y;
 
         //move down
-        if(newX > 1 && newX < 8 && newY > 0 && newY < 8) {
+        if(newX > 1) {
             newX = newX - 1;
             var newPosition = new ChessPosition(newX,newY);
             if(board.getPiece(newPosition) != null) {
@@ -100,7 +100,7 @@ public class KingMovesCalc implements PieceMovesCalc {
         newY = y;
 
         //move down right
-        if(newX > 1 && newX < 8 && newY > 0 && newY < 8) {
+        if(newX > 1 && newY < 8) {
             newX = newX - 1;
             newY = newY + 1;
             var newPosition = new ChessPosition(newX,newY);
@@ -115,7 +115,7 @@ public class KingMovesCalc implements PieceMovesCalc {
         newY = y;
 
         //move down left
-        if(newX > 1 && newX < 8 && newY > 1 && newY < 8) {
+        if(newX > 1 && newY > 1) {
             newX = newX - 1;
             newY = newY - 1;
             var newPosition = new ChessPosition(newX,newY);
