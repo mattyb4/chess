@@ -11,7 +11,6 @@ public class KingMovesCalc implements PieceMovesCalc {
         ArrayList<ChessMove> kingMoves = new ArrayList<>();
         int newRow = row;
         int newCol = col;
-        var myPiece = board.getPiece(currentPosition);
         //move up
         if(newRow < 8) {
             newRow++;
