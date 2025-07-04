@@ -6,17 +6,16 @@ import java.util.Collection;
 public class RookMovesCalc implements PieceMovesCalc {
     @Override
     public Collection<ChessMove> calculateMoves(ChessBoard board, ChessPosition currentPosition) {
-        int x = currentPosition.getRow();
-        int y = currentPosition.getColumn();
+        int row = currentPosition.getRow();
+        int col = currentPosition.getColumn();
         ArrayList<ChessMove> rookMoves = new ArrayList<>();
-        int newX = x;
-        int newY = y;
+        int newRow = row;
+        int newCol = col;
         var myPiece = board.getPiece(currentPosition);
-
         //move up
-        while (newX < 8) {
-            newX++;
-            var newPosition = new ChessPosition(newX,newY);
+        while (newRow < 8) {
+            newRow++;
+            var newPosition = new ChessPosition(newRow, newCol);
             //check if piece hits another piece
             if(board.getPiece(newPosition) != null) {
                 if(board.getPiece(newPosition).getTeamColor() == myPiece.getTeamColor()){
@@ -26,16 +25,14 @@ public class RookMovesCalc implements PieceMovesCalc {
                 break; //capture opposing piece
             }
             rookMoves.add(new ChessMove(currentPosition,newPosition,null));
-
         }
         //reset position to starting position
-        newX = x;
-        newY = y;
-
+        newRow = row;
+        newCol = col;
         //move left
-        while (newY > 1) {
-            newY--;
-            var newPosition = new ChessPosition(newX,newY);
+        while (newCol > 1) {
+            newCol--;
+            var newPosition = new ChessPosition(newRow, newCol);
             if(board.getPiece(newPosition) != null) {
                 if(board.getPiece(newPosition).getTeamColor() == myPiece.getTeamColor()){
                     break;
@@ -43,15 +40,13 @@ public class RookMovesCalc implements PieceMovesCalc {
             }
             rookMoves.add(new ChessMove(currentPosition,newPosition,null));
             if(board.getPiece(newPosition) != null) break;
-
         }
-        newX = x;
-        newY = y;
-
+        newRow = row;
+        newCol = col;
         //move right
-        while (newY < 8) {
-            newY++;
-            var newPosition = new ChessPosition(newX,newY);
+        while (newCol < 8) {
+            newCol++;
+            var newPosition = new ChessPosition(newRow, newCol);
             if(board.getPiece(newPosition) != null) {
                 if(board.getPiece(newPosition).getTeamColor() == myPiece.getTeamColor()){
                     break;
@@ -60,13 +55,12 @@ public class RookMovesCalc implements PieceMovesCalc {
             rookMoves.add(new ChessMove(currentPosition,newPosition,null));
             if(board.getPiece(newPosition) != null) break;
         }
-        newX = x;
-        newY = y;
-
+        newRow = row;
+        newCol = col;
         //move down
-        while (newX > 1) {
-            newX = newX-1;
-            var newPosition = new ChessPosition(newX,newY);
+        while (newRow > 1) {
+            newRow--;
+            var newPosition = new ChessPosition(newRow, newCol);
             if(board.getPiece(newPosition) != null) {
                 if(board.getPiece(newPosition).getTeamColor() == myPiece.getTeamColor()){
                     break;
@@ -75,7 +69,6 @@ public class RookMovesCalc implements PieceMovesCalc {
             rookMoves.add(new ChessMove(currentPosition,newPosition,null));
             if(board.getPiece(newPosition) != null) break;
         }
-
         return rookMoves;
     }
 }
