@@ -156,18 +156,12 @@ public class ChessGame {
                 if(currentPiece != null) {
                     if (currentPiece.getTeamColor() == teamColor) {
                         if (!validMoves(currentPosition).isEmpty()) {
-                            System.out.println("valid move found for " + board.getPiece(currentPosition));
-                            System.out.println("valid moves are " + validMoves(currentPosition));
                             noValidMoves = false;
-                        } else {
-                            System.out.println("no valid moves at " + currentPosition);
                         }
                     }
                 }
             }
         }
-        System.out.println("isIncheck is " + isInCheck(teamColor));
-        System.out.println("noValidMoves is " + noValidMoves);
         return isInCheck(teamColor) && noValidMoves;
     }
 
@@ -189,18 +183,12 @@ public class ChessGame {
                 if(currentPiece != null) {
                     if (currentPiece.getTeamColor() == teamColor) {
                         if (!validMoves(currentPosition).isEmpty()) {
-                            System.out.println("valid move found for " + board.getPiece(currentPosition));
-                            System.out.println("valid moves are " + validMoves(currentPosition));
                             noValidMoves = false;
-                        } else {
-                            System.out.println("no valid moves at " + currentPosition);
                         }
                     }
                 }
             }
         }
-        System.out.println("isIncheck is " + isInCheck(teamColor));
-        System.out.println("noValidMoves is " + noValidMoves);
         return !isInCheck(teamColor) && noValidMoves;
     }
 
