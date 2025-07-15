@@ -2,11 +2,14 @@ package dataaccess;
 
 import model.UserData;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class MemoryUserDAO implements UserDAO {
     private Collection<UserData> db; //simulate db without actually having one
-
+    public MemoryUserDAO(){
+        this.db = new ArrayList<>();
+    }
     @Override
     public UserData getUser(String username) throws DataAccessException {
         for (UserData userInfo : db) {
@@ -15,7 +18,7 @@ public class MemoryUserDAO implements UserDAO {
             }
         }
         //if for loop doesn't find user
-        throw new DataAccessException("could not find user");
+        return null;
     }
 
     @Override

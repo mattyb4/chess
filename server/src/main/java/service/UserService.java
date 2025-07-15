@@ -22,6 +22,7 @@ public class UserService {
     }
 
     public AuthData register(UserData userData) throws DataAccessException, AlreadyTakenException {
+        System.out.println("in register in UserService");
         if (userDAO.getUser(userData.username()) != null) {
             throw new AlreadyTakenException("Error: Username already taken");
         }
@@ -29,6 +30,7 @@ public class UserService {
             String authToken = UUID.randomUUID().toString();
             var authData = new AuthData(authToken, userData.username());
             authDAO.createAuth(authData);
+            System.out.println("auth token created");
             return authData;
         }
     }
