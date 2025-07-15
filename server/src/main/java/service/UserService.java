@@ -1,8 +1,6 @@
 package service;
 
 import dataaccess.*;
-import handler.RegisterRequest;
-import handler.RegisterResult;
 import model.AuthData;
 import model.UserData;
 import java.util.UUID;
