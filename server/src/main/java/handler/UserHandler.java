@@ -31,4 +31,21 @@ public class UserHandler {
             return new Gson().toJson(new ErrorHandler("Error: Bad request"));
         }
     }
+
+    public String login(Request req, Response res) throws DataAccessException {
+        try {
+            var serializer = new Gson();
+            UserData data = serializer.fromJson(req.body(), UserData.class);
+            AuthData authData = service.login(data);
+            var result = serializer.toJson(authData);
+            res.status(200);
+            return result;
+        } catch (InvalidUserException e) {
+            res.status(401);
+            return new Gson().toJson(new ErrorHandler("Error: invalid credentials"));
+        } catch (BadRequestException e) {
+            res.status(400);
+            return new Gson().toJson(new ErrorHandler("Error: missing username or password"));
+        }
+    }
 }

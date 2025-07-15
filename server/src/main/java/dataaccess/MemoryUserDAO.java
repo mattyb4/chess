@@ -23,6 +23,12 @@ public class MemoryUserDAO implements UserDAO {
 
     @Override
     public UserData getUserInfo(String username, String password) throws DataAccessException {
+        for (UserData userInfo : db) {
+            if (userInfo.username().equals(username) && userInfo.password().equals(password)) {
+                return userInfo;
+            }
+        }
+        //if for loop doesn't find matching user login info
         return null;
     }
 

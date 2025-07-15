@@ -34,6 +34,21 @@ public class UserService {
         }
     }
 
+    public AuthData login(UserData userData) throws DataAccessException, InvalidUserException, BadRequestException {
+        if(userData.username() == null || userData.password() == null || userData.email() == null) {
+            throw new BadRequestException("Error: missing username or password");
+        }
+        if(userDAO.getUserInfo(userData.username(), userData.password()) == null) {
+            throw new InvalidUserException("Error: invalid credentials");
+        }
+        else {
+            String authToken = UUID.randomUUID().toString();
+            var authData = new AuthData(authToken, userData.username());
+            authDAO.createAuth(authData);
+            return authData;
+        }
+    }
+
     public void clear() throws DataAccessException {
         userDAO.clear();
         authDAO.clear();
