@@ -48,4 +48,16 @@ public class UserHandler {
             return new Gson().toJson(new ErrorHandler("Error: missing username or password"));
         }
     }
+
+    public String logout(Request req, Response res) throws DataAccessException {
+        try {
+            String authToken = req.headers("Authorization");
+            service.logout(authToken);
+            res.status(200);
+            return "{}";
+        } catch (InvalidUserException e) {
+            res.status(401);
+            return new Gson().toJson(new ErrorHandler("Error: unauthorized"));
+        }
+    }
 }

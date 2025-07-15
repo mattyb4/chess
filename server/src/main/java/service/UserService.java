@@ -35,7 +35,7 @@ public class UserService {
     }
 
     public AuthData login(UserData userData) throws DataAccessException, InvalidUserException, BadRequestException {
-        if(userData.username() == null || userData.password() == null || userData.email() == null) {
+        if(userData.username() == null || userData.password() == null) {
             throw new BadRequestException("Error: missing username or password");
         }
         if(userDAO.getUserInfo(userData.username(), userData.password()) == null) {
@@ -46,6 +46,15 @@ public class UserService {
             var authData = new AuthData(authToken, userData.username());
             authDAO.createAuth(authData);
             return authData;
+        }
+    }
+
+    public void logout(String authToken) throws DataAccessException, InvalidUserException {
+        if(authDAO.getAuth(authToken) == null) {
+            throw new InvalidUserException("Error: unauthorized");
+        }
+        else {
+            authDAO.deleteAuth(authToken);
         }
     }
 
