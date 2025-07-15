@@ -1,10 +1,7 @@
 package handler;
 
 import com.google.gson.Gson;
-import dataaccess.AlreadyTakenException;
-import dataaccess.AuthDAO;
-import dataaccess.DataAccessException;
-import dataaccess.UserDAO;
+import dataaccess.*;
 import model.AuthData;
 import model.UserData;
 import service.UserService;
@@ -29,6 +26,9 @@ public class UserHandler {
         } catch (AlreadyTakenException e) {
             res.status(403);
             return new Gson().toJson(new ErrorHandler("Error: Username already taken"));
+        } catch (BadRequestException e) {
+            res.status(400);
+            return new Gson().toJson(new ErrorHandler("Error: Bad request"));
         }
     }
 }
