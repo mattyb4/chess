@@ -19,6 +19,16 @@ public class MemoryUserDAO implements UserDAO {
     }
 
     @Override
+    public UserData getUserInfo(String username, String password) throws DataAccessException {
+        return null;
+    }
+
+    @Override
+    public void clear() throws DataAccessException {
+
+    }
+
+    @Override
     public void createUser(UserData user) {
         db.add(user);
     }
