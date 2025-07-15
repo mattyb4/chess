@@ -27,6 +27,7 @@ public class UserService {
             throw new AlreadyTakenException("Error: Username already taken");
         }
         else {
+            userDAO.createUser(userData);
             String authToken = UUID.randomUUID().toString();
             var authData = new AuthData(authToken, userData.username());
             authDAO.createAuth(authData);

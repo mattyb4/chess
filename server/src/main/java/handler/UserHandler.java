@@ -18,12 +18,17 @@ public class UserHandler {
         this.service = service;
     }
 
-    public String register(Request req, Response res) throws DataAccessException, AlreadyTakenException {
-        var serializer = new Gson();
-        UserData data = serializer.fromJson(req.body(), UserData.class);
-        AuthData authData = service.register(data);
-        var result = new Gson().toJson(authData);
-        res.status(200);
-        return result;
+    public String register(Request req, Response res) throws DataAccessException {
+        try {
+            var serializer = new Gson();
+            UserData data = serializer.fromJson(req.body(), UserData.class);
+            AuthData authData = service.register(data);
+            var result = serializer.toJson(authData);
+            res.status(200);
+            return result;
+        } catch (AlreadyTakenException e) {
+            res.status(403);
+            return new Gson().toJson(new ErrorHandler("Error: Username already taken"));
+        }
     }
 }
