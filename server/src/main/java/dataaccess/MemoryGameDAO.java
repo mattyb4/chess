@@ -56,11 +56,21 @@ public class MemoryGameDAO implements GameDAO {
 
     @Override
     public void updateGame(GameData game) throws DataAccessException {
-
+        db.remove(getGame(game.gameID()));
+        db.add(game);
     }
 
     @Override
-    public GameData getUsername(String playerColor) throws DataAccessException {
-        return null;
+    public String getUsername(String playerColor, int gameID) throws DataAccessException {
+        var game = getGame(gameID);
+        if(playerColor == "WHITE") {
+            return game.whiteUsername();
+        }
+        if (playerColor == "BLACK") {
+            return game.blackUsername();
+        }
+        else {
+            return null;
+        }
     }
 }

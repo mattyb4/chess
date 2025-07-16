@@ -32,7 +32,7 @@ public class SQLGameDAO implements GameDAO {
     }
 
     @Override
-    public GameData getUsername(String playerColor) throws DataAccessException {
+    public String getUsername(String playerColor, int gameID) throws DataAccessException {
         return null;
     }
 }

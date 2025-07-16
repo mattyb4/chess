@@ -2,6 +2,7 @@ package service;
 
 import chess.ChessGame;
 import dataaccess.*;
+import model.AuthData;
 import model.GameData;
 import model.GameSumm;
 
@@ -44,6 +45,34 @@ public class GameService {
                     ))
                     .toList();
 
+        }
+    }
+
+    public void join(int gameID, String playerColor, String authToken) throws DataAccessException, InvalidUserException, AlreadyTakenException, InvalidInputException {
+        String newWhiteUsername = "";
+        String newBlackUsername = "";
+        AuthData authData = authDAO.getAuth(authToken);
+        GameData currentGame = gameDAO.getGame(gameID);
+        if(authData == null) {
+            throw new InvalidUserException("Error: unauthorized");
+        }
+        if(currentGame == null) {
+            throw new InvalidInputException("Error: game not found");
+        }
+        if (gameDAO.getUsername(playerColor, gameID) != null) {
+            throw new AlreadyTakenException("Error: color already taken");
+        }
+        else {
+            if(playerColor.equals("WHITE")) {
+                newWhiteUsername = authData.username();
+                newBlackUsername = gameDAO.getUsername("BLACK",gameID);
+            }
+            if(playerColor.equals("BLACK")) {
+                newBlackUsername = authData.username();
+                newWhiteUsername = gameDAO.getUsername("WHITE", gameID);
+            }
+            var updatedGame = new GameData(gameID, newWhiteUsername, newBlackUsername, currentGame.gameName(), currentGame.game());
+            gameDAO.updateGame(updatedGame);
         }
     }
 

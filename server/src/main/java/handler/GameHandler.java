@@ -1,11 +1,10 @@
 package handler;
 
 import com.google.gson.Gson;
-import dataaccess.BadRequestException;
-import dataaccess.DataAccessException;
-import dataaccess.InvalidUserException;
+import dataaccess.*;
 import model.GameData;
 import model.GameSumm;
+import model.JoinRequest;
 import service.GameService;
 import spark.Request;
 import spark.Response;
@@ -48,6 +47,25 @@ public class GameHandler {
         } catch (InvalidUserException e) {
             res.status(401);
             return new Gson().toJson(new ErrorHandler("Error: unauthorized"));
+        }
+    }
+
+    public String join(Request req, Response res) throws DataAccessException {
+        try {
+            var serializer = new Gson();
+            JoinRequest data = serializer.fromJson(req.body(), JoinRequest.class);
+            service.join(data.gameID(), data.playerColor(), req.headers("Authorization"));
+            res.status(200);
+            return "{}";
+        } catch (InvalidInputException e) {
+            res.status(404);
+            return new Gson().toJson(new ErrorHandler("Error: game not found"));
+        } catch (InvalidUserException e) {
+            res.status(401);
+            return new Gson().toJson(new ErrorHandler("Error: unauthorized"));
+        } catch (AlreadyTakenException e) {
+            res.status(403);
+            return new Gson().toJson(new ErrorHandler("Error: color already taken"));
         }
     }
 }
