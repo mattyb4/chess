@@ -18,7 +18,7 @@ public class Server {
 
     UserHandler userHandler = new UserHandler(userService);
     GameHandler gameHandler = new GameHandler(gameService);
-    ClearHandler clearHandler = new ClearHandler(userService);
+    ClearHandler clearHandler = new ClearHandler(userService, gameService);
     public int run(int desiredPort) {
         Spark.port(desiredPort);
 
