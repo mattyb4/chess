@@ -58,7 +58,7 @@ public class GameHandler {
             res.status(200);
             return "{}";
         } catch (InvalidInputException e) {
-            res.status(404);
+            res.status(400);
             return new Gson().toJson(new ErrorHandler("Error: game not found"));
         } catch (InvalidUserException e) {
             res.status(401);
@@ -66,6 +66,12 @@ public class GameHandler {
         } catch (AlreadyTakenException e) {
             res.status(403);
             return new Gson().toJson(new ErrorHandler("Error: color already taken"));
+        } catch (BadRequestException e) {
+            res.status(400);
+            return new Gson().toJson(new ErrorHandler("Error: valid color not specifiied"));
+        } catch (Exception e) {
+            res.status(500);
+            return new Gson().toJson(new ErrorHandler("Error: Internal server error"));
         }
     }
 }

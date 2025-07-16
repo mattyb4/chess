@@ -17,7 +17,6 @@ public class UserService {
     }
 
     public AuthData register(UserData userData) throws DataAccessException, AlreadyTakenException, BadRequestException {
-        System.out.println("in register in UserService");
         if(userData.username() == null || userData.password() == null || userData.email() == null) {
             throw new BadRequestException("Error: bad request");
         }
@@ -29,7 +28,6 @@ public class UserService {
             String authToken = UUID.randomUUID().toString();
             var authData = new AuthData(authToken, userData.username());
             authDAO.createAuth(authData);
-            System.out.println("auth token created");
             return authData;
         }
     }

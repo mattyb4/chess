@@ -63,10 +63,10 @@ public class MemoryGameDAO implements GameDAO {
     @Override
     public String getUsername(String playerColor, int gameID) throws DataAccessException {
         var game = getGame(gameID);
-        if(playerColor == "WHITE") {
+        if(playerColor.equals("WHITE")) {
             return game.whiteUsername();
         }
-        if (playerColor == "BLACK") {
+        if (playerColor.equals("BLACK")) {
             return game.blackUsername();
         }
         else {
