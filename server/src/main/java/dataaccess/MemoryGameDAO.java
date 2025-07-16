@@ -29,7 +29,7 @@ public class MemoryGameDAO implements GameDAO {
                 }
             }
             if(!taken) {
-                GameData newGame = new GameData(newID, gameName, null, null, new ChessGame());
+                GameData newGame = new GameData(newID, null, null, gameName, new ChessGame());
                 db.add(newGame);
                 return newID;
             }
@@ -51,7 +51,7 @@ public class MemoryGameDAO implements GameDAO {
 
     @Override
     public Collection<GameData> listGames() throws DataAccessException {
-        return List.of();
+        return db;
     }
 
     @Override

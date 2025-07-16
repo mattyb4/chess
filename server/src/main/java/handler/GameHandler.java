@@ -5,10 +5,13 @@ import dataaccess.BadRequestException;
 import dataaccess.DataAccessException;
 import dataaccess.InvalidUserException;
 import model.GameData;
-import model.UserData;
+import model.GameSumm;
 import service.GameService;
 import spark.Request;
 import spark.Response;
+
+import java.util.Collection;
+import java.util.Map;
 
 public class GameHandler {
     private final GameService service;
@@ -28,6 +31,20 @@ public class GameHandler {
         } catch (BadRequestException e) {
             res.status(400);
             return new Gson().toJson(new ErrorHandler("Error: no game name"));
+        } catch (InvalidUserException e) {
+            res.status(401);
+            return new Gson().toJson(new ErrorHandler("Error: unauthorized"));
+        }
+    }
+
+    public String listAllGames(Request req, Response res) throws DataAccessException {
+        try {
+            var serializer = new Gson();
+            Collection<GameSumm> gameData = service.listAllGames(req.headers("Authorization"));
+            Map<String, Collection<GameSumm>> adjustedData = Map.of("games", gameData);
+            var result = serializer.toJson(adjustedData);
+            res.status(200);
+            return result;
         } catch (InvalidUserException e) {
             res.status(401);
             return new Gson().toJson(new ErrorHandler("Error: unauthorized"));
