@@ -36,14 +36,8 @@ public class GameService {
             throw new InvalidUserException("Error: unauthorized");
         }
         else {
-            return gameDAO.listGames().stream()
-                    .map(game -> new GameSumm(
-                            game.gameID(),
-                            game.whiteUsername(),
-                            game.blackUsername(),
-                            game.gameName()
-                    ))
-                    .toList();
+            return gameDAO.listGames().stream().map(game -> new GameSumm(
+                            game.gameID(), game.whiteUsername(), game.blackUsername(), game.gameName())).toList();
 
         }
     }
