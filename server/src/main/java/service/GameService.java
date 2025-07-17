@@ -36,6 +36,7 @@ public class GameService {
             throw new InvalidUserException("Error: unauthorized");
         }
         else {
+            //converts GameData into GameSumm object with only the necessary fields
             return gameDAO.listGames().stream().map(game -> new GameSumm(
                             game.gameID(), game.whiteUsername(), game.blackUsername(), game.gameName())).toList();
 

@@ -40,6 +40,7 @@ public class GameHandler {
         try {
             var serializer = new Gson();
             Collection<GameSumm> gameData = service.listAllGames(req.headers("Authorization"));
+            //convert collection into map with the key "games" to match output requirements
             Map<String, Collection<GameSumm>> adjustedData = Map.of("games", gameData);
             var result = serializer.toJson(adjustedData);
             res.status(200);

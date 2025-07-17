@@ -16,11 +16,11 @@ public class UserHandler {
     }
 
     public String register(Request req, Response res) throws DataAccessException {
-        try {
+        try { //convert from Json to readable request
             var serializer = new Gson();
             UserData data = serializer.fromJson(req.body(), UserData.class);
             AuthData authData = service.register(data);
-            var result = serializer.toJson(authData);
+            var result = serializer.toJson(authData); //convert back into Json for output
             res.status(200);
             return result;
         } catch (AlreadyTakenException e) {
