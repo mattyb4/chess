@@ -42,7 +42,8 @@ public class GameService {
         }
     }
 
-    public void join(int gameID, String playerColor, String authToken) throws DataAccessException, InvalidUserException, AlreadyTakenException, InvalidInputException, BadRequestException {
+    public void join(int gameID, String playerColor, String authToken)
+            throws DataAccessException, InvalidUserException, AlreadyTakenException, InvalidInputException, BadRequestException {
         String newWhiteUsername = "";
         String newBlackUsername = "";
         AuthData authData = authDAO.getAuth(authToken);

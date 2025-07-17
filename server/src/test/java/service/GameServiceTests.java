@@ -70,7 +70,8 @@ public class GameServiceTests {
 
     @Test
     @DisplayName("Successfully join game")
-    public void positiveJoinTest() throws DataAccessException, BadRequestException, InvalidUserException, InvalidInputException, AlreadyTakenException {
+    public void positiveJoinTest()
+            throws DataAccessException, BadRequestException, InvalidUserException, InvalidInputException, AlreadyTakenException {
         AuthData testAuth = new AuthData("authtoken","username");
         authDAO.createAuth(testAuth);
         var gameData = gameService.create("testgame",testAuth.authToken());
