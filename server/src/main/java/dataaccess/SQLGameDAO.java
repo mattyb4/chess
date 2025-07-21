@@ -39,7 +39,13 @@ public class SQLGameDAO implements GameDAO {
     }
     @Override
     public void clear() throws DataAccessException {
-
+        String statement = "TRUNCATE TABLE game";
+        try (var conn = DatabaseManager.getConnection();
+             var ps = conn.prepareStatement(statement)) {
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            throw new DataAccessException("Error clearing user table", ex);
+        }
     }
 
     @Override
