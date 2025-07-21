@@ -32,9 +32,9 @@ public class SQLUserDAO implements UserDAO {
                      preparedStatement.executeUpdate();
                  }
              }
-         } catch (SQLException | DataAccessException ex) {
+         } catch (SQLException | DataAccessException e) {
              System.out.println("could not connect to db");
-             throw new RuntimeException(ex);
+             throw new RuntimeException(e);
          }
     }
 
@@ -56,8 +56,8 @@ public class SQLUserDAO implements UserDAO {
                 }
 
             }
-        } catch (SQLException ex) {
-            throw new DataAccessException("Error retrieving user from db", ex);
+        } catch (SQLException e) {
+            throw new DataAccessException("Error retrieving user from db", e);
         }
     }
 
@@ -67,8 +67,8 @@ public class SQLUserDAO implements UserDAO {
         try (var conn = DatabaseManager.getConnection();
             var ps = conn.prepareStatement(statement)) {
             ps.executeUpdate();
-        } catch (SQLException ex) {
-            throw new DataAccessException("Error clearing user table", ex);
+        } catch (SQLException e) {
+            throw new DataAccessException("Error clearing user table", e);
         }
     }
 
@@ -82,11 +82,11 @@ public class SQLUserDAO implements UserDAO {
                 ps.setString(2,hashedPassword);
                 ps.setString(3,user.email());
                 ps.executeUpdate();
-            } catch (SQLException ex) {
-                throw new DataAccessException("Error adding user to db", ex);
+            } catch (SQLException e) {
+                throw new DataAccessException("Error adding user to db", e);
             }
-        } catch (SQLException ex) {
-            throw new DataAccessException("Error accessing db");
+        } catch (SQLException e) {
+            throw new DataAccessException("Error accessing db", e);
         }
     }
 
@@ -106,8 +106,8 @@ public class SQLUserDAO implements UserDAO {
                     }
                 }
             }
-        } catch (SQLException ex) {
-            throw new DataAccessException("Failed to retrieve user info", ex);
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to retrieve user info", e);
         }
         //if info can't be found
         return null;

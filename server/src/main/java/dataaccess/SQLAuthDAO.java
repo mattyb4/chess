@@ -30,9 +30,9 @@ public class SQLAuthDAO implements AuthDAO{
                     preparedStatement.executeUpdate();
                 }
             }
-        } catch (SQLException | DataAccessException ex) {
+        } catch (SQLException | DataAccessException e) {
             System.out.println("could not connect to db");
-            throw new RuntimeException(ex);
+            throw new RuntimeException(e);
         }
     }
     @Override
@@ -41,8 +41,8 @@ public class SQLAuthDAO implements AuthDAO{
         try (var conn = DatabaseManager.getConnection();
              var ps = conn.prepareStatement(statement)) {
             ps.executeUpdate();
-        } catch (SQLException ex) {
-            throw new DataAccessException("Error clearing user table", ex);
+        } catch (SQLException e) {
+            throw new DataAccessException("Error clearing user table", e);
         }
     }
 
@@ -55,9 +55,9 @@ public class SQLAuthDAO implements AuthDAO{
                 ps.setString(2, authData.authToken());
                 ps.executeUpdate();
             } catch (SQLException ex) {
-                throw new DataAccessException("Error adding auth data to db", ex);
+                throw new DataAccessException("Error adding auth data to db", e);
             }
-        } catch (SQLException ex) {
+        } catch (SQLException e) {
             throw new DataAccessException("Error accessing db");
         }
     }
@@ -78,8 +78,8 @@ public class SQLAuthDAO implements AuthDAO{
                 }
 
             }
-        } catch (SQLException ex) {
-            throw new DataAccessException("Error retrieving user from db", ex);
+        } catch (SQLException e) {
+            throw new DataAccessException("Error retrieving user from db", e);
         }
     }
 
@@ -91,8 +91,8 @@ public class SQLAuthDAO implements AuthDAO{
                 ps.setString(1, authToken);
                 ps.executeUpdate();
             }
-        } catch (SQLException ex) {
-            throw new DataAccessException("Error deleting authToken from db", ex);
+        } catch (SQLException e) {
+            throw new DataAccessException("Error deleting authToken from db", e);
         }
     }
 }
