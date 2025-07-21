@@ -73,7 +73,7 @@ public class SQLAuthDAO implements AuthDAO{
                         String user = rs.getString("username");
                         return new AuthData(user, authToken);
                     } else {
-                        return null; //user not found
+                        return null; //authdata not found
                     }
                 }
 
