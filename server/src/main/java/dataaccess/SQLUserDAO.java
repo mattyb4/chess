@@ -2,6 +2,7 @@ package dataaccess;
 
 import com.google.gson.Gson;
 import model.UserData;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.SQLException;
 
@@ -62,7 +63,13 @@ public class SQLUserDAO implements UserDAO {
 
     @Override
     public void clear() throws DataAccessException {
-
+        String statement = "TRUNCATE TABLE user";
+        try (var conn = DatabaseManager.getConnection();
+            var ps = conn.prepareStatement(statement)) {
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            throw new DataAccessException("Error clearing user table", ex);
+        }
     }
 
     @Override
@@ -71,7 +78,8 @@ public class SQLUserDAO implements UserDAO {
             var statement = "INSERT INTO user (username, password, email) VALUES (?,?,?)";
             try (var ps = conn.prepareStatement(statement)) {
                 ps.setString(1, user.username());
-                ps.setString(2,user.password());
+                String hashedPassword = BCrypt.hashpw(user.password(), BCrypt.gensalt());
+                ps.setString(2,hashedPassword);
                 ps.setString(3,user.email());
                 ps.executeUpdate();
             } catch (SQLException ex) {
@@ -84,6 +92,24 @@ public class SQLUserDAO implements UserDAO {
 
     @Override
     public UserData getUserInfo(String username, String password) throws DataAccessException {
+        try (var conn = DatabaseManager.getConnection()) {
+            var statement = "SELECT username, password, email FROM user WHERE username = ?";
+            try (var ps = conn.prepareStatement(statement)) {
+                ps.setString(1, username);
+                try (var rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        String storedHash = rs.getString("password");
+                        if(BCrypt.checkpw(password, storedHash)) {
+                            String email = rs.getString("email");
+                            return new UserData(username, storedHash, email);
+                        }
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DataAccessException("Failed to retrieve user info", ex);
+        }
+        //if info can't be found
         return null;
     }
 }
