@@ -29,6 +29,9 @@ public class UserHandler {
         } catch (BadRequestException e) {
             res.status(400);
             return new Gson().toJson(new ErrorHandler("Error: Bad request"));
+        } catch (DataAccessException e) {
+            res.status(500);
+            return new Gson().toJson(new ErrorHandler("Error: internal server error"));
         }
     }
 
@@ -46,6 +49,9 @@ public class UserHandler {
         } catch (BadRequestException e) {
             res.status(400);
             return new Gson().toJson(new ErrorHandler("Error: missing username or password"));
+        } catch (DataAccessException e) {
+            res.status(500);
+            return new Gson().toJson(new ErrorHandler("Error: internal server error"));
         }
     }
 
@@ -58,6 +64,9 @@ public class UserHandler {
         } catch (InvalidUserException e) {
             res.status(401);
             return new Gson().toJson(new ErrorHandler("Error: unauthorized"));
+        } catch (DataAccessException e) {
+            res.status(500);
+            return new Gson().toJson(new ErrorHandler("Error: internal server error"));
         }
     }
 }

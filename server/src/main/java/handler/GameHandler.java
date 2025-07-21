@@ -33,6 +33,9 @@ public class GameHandler {
         } catch (InvalidUserException e) {
             res.status(401);
             return new Gson().toJson(new ErrorHandler("Error: unauthorized"));
+        } catch (DataAccessException e) {
+            res.status(500);
+            return new Gson().toJson(new ErrorHandler("Error: internal server error"));
         }
     }
 
@@ -48,6 +51,9 @@ public class GameHandler {
         } catch (InvalidUserException e) {
             res.status(401);
             return new Gson().toJson(new ErrorHandler("Error: unauthorized"));
+        } catch (DataAccessException e) {
+            res.status(500);
+            return new Gson().toJson(new ErrorHandler("Error: internal server error"));
         }
     }
 
@@ -70,7 +76,7 @@ public class GameHandler {
         } catch (BadRequestException e) {
             res.status(400);
             return new Gson().toJson(new ErrorHandler("Error: valid color not specifiied"));
-        } catch (Exception e) {
+        } catch (DataAccessException e) {
             res.status(500);
             return new Gson().toJson(new ErrorHandler("Error: Internal server error"));
         }

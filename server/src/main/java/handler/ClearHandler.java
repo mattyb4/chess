@@ -1,5 +1,6 @@
 package handler;
 
+import com.google.gson.Gson;
 import dataaccess.DataAccessException;
 import service.GameService;
 import service.UserService;
@@ -16,8 +17,14 @@ public class ClearHandler {
     }
 
     public String clear(Request req, Response res) throws DataAccessException {
-        userService.clear();
-        gameService.clear();
-        return "{}";
+        try {
+            userService.clear();
+            gameService.clear();
+            res.status(200);
+            return "{}";
+        } catch (DataAccessException e) {
+            res.status(500);
+            return new Gson().toJson(new ErrorHandler("Error: internal server error"));
+        }
     }
 }
