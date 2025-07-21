@@ -54,7 +54,7 @@ public class SQLAuthDAO implements AuthDAO{
                 ps.setString(1, authData.username());
                 ps.setString(2, authData.authToken());
                 ps.executeUpdate();
-            } catch (SQLException ex) {
+            } catch (SQLException e) {
                 throw new DataAccessException("Error adding auth data to db", e);
             }
         } catch (SQLException e) {
@@ -71,7 +71,7 @@ public class SQLAuthDAO implements AuthDAO{
                 try (var rs = ps.executeQuery()) {
                     if (rs.next()) {
                         String user = rs.getString("username");
-                        return new AuthData(user, authToken);
+                        return new AuthData(authToken, user);
                     } else {
                         return null; //authdata not found
                     }
