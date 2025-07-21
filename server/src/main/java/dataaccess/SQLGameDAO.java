@@ -2,10 +2,41 @@ package dataaccess;
 
 import model.GameData;
 
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
 public class SQLGameDAO implements GameDAO {
+
+    public SQLGameDAO() {
+        String[] createStatements = {
+                """
+                CREATE TABLE IF NOT EXISTS game (
+                `gameID` INT NOT NULL,
+                `whiteUsername` varchar(256),
+                `blackUsername` varchar(256),
+                `gameName` varchar(256),
+                `chessGame` TEXT,
+                PRIMARY KEY (`gameID`),
+                )
+                """
+        };
+        try {DatabaseManager.createDatabase(); }
+        catch (DataAccessException e) {
+            System.out.println("could not create db");
+            throw new RuntimeException(e);
+        }
+        try (var conn = DatabaseManager.getConnection()) {
+            for(var statement : createStatements) {
+                try (var preparedStatement = conn.prepareStatement(statement)) {
+                    preparedStatement.executeUpdate();
+                }
+            }
+        } catch (SQLException | DataAccessException ex) {
+            System.out.println("could not connect to db");
+            throw new RuntimeException(ex);
+        }
+    }
     @Override
     public void clear() throws DataAccessException {
 
