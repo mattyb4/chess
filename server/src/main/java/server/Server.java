@@ -9,9 +9,12 @@ import service.UserService;
 import spark.*;
 
 public class Server {
-    UserDAO userDAO = new MemoryUserDAO();
+    //UserDAO userDAO = new MemoryUserDAO();
     AuthDAO authDAO = new MemoryAuthDAO();
     GameDAO gameDAO = new MemoryGameDAO();
+    UserDAO userDAO = new SQLUserDAO();
+    //AuthDAO authDAO = new SQLAuthDAO();
+    //GameDAO gameDAO = new SQLGameDAO();
 
     UserService userService = new UserService(userDAO, authDAO);
     GameService gameService = new GameService(gameDAO, authDAO);
@@ -19,6 +22,7 @@ public class Server {
     UserHandler userHandler = new UserHandler(userService);
     GameHandler gameHandler = new GameHandler(gameService);
     ClearHandler clearHandler = new ClearHandler(userService, gameService);
+
     public int run(int desiredPort) {
         Spark.port(desiredPort);
 
