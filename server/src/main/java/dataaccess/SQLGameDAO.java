@@ -8,6 +8,7 @@ import model.UserData;
 import javax.xml.crypto.Data;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -101,7 +102,27 @@ public class SQLGameDAO implements GameDAO {
 
     @Override
     public Collection<GameData> listGames() throws DataAccessException {
-        return List.of();
+        Collection<GameData> gameList = new ArrayList<>();
+        try (var conn = DatabaseManager.getConnection()) {
+            String statement = "SELECT gameID, whiteUsername, blackUsername, gameName, gameData FROM game";
+            try (var ps = conn.prepareStatement(statement);
+                var rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int gameID = rs.getInt("gameID");
+                    String whiteUsername = rs.getString("whiteUsername");
+                    String blackUsername = rs.getString("blackUsername");
+                    String gameName = rs.getString("gameName");
+                    String gameData = rs.getString("gameData");
+                    var chessGame = new Gson().fromJson(gameData, ChessGame.class);
+                    gameList.add(new GameData(gameID,whiteUsername,blackUsername,gameName,chessGame));
+                }
+            } catch (SQLException e) {
+                throw new DataAccessException("Error finding games", e);
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("Error accessing db", e);
+        }
+        return gameList;
     }
 
     @Override
