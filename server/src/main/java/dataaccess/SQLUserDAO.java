@@ -27,7 +27,7 @@ public class SQLUserDAO implements UserDAO {
     @Override
     public UserData getUser(String username) throws DataAccessException {
         try (var conn = DatabaseManager.getConnection()) {
-            var statement = "SELECT username, password, email FROM user WHERE username =?";
+            var statement = "SELECT username, password, email FROM user WHERE username = ?";
             try (var ps = conn.prepareStatement(statement)) {
                 ps.setString(1,username);
                 try (var rs = ps.executeQuery()) {
@@ -64,6 +64,7 @@ public class SQLUserDAO implements UserDAO {
             var statement = "INSERT INTO user (username, password, email) VALUES (?,?,?)";
             try (var ps = conn.prepareStatement(statement)) {
                 ps.setString(1, user.username());
+                //encrypt password
                 String hashedPassword = BCrypt.hashpw(user.password(), BCrypt.gensalt());
                 ps.setString(2,hashedPassword);
                 ps.setString(3,user.email());
@@ -83,12 +84,11 @@ public class SQLUserDAO implements UserDAO {
             try (var ps = conn.prepareStatement(statement)) {
                 ps.setString(1, username);
                 try (var rs = ps.executeQuery()) {
-                    if (!rs.next()) {
+                    if (!rs.next()) { //nothing in the table
                         return null;
                     }
-
                     String storedHash = rs.getString("password");
-                    if(!BCrypt.checkpw(password, storedHash)) {
+                    if(!BCrypt.checkpw(password, storedHash)) { //compares encrypted version of pw
                         return null;
                     }
                     String email = rs.getString("email");

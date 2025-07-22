@@ -97,7 +97,7 @@ public class SQLGameDAO implements GameDAO {
                     String blackUsername = rs.getString("blackUsername");
                     String gameName = rs.getString("gameName");
                     String gameData = rs.getString("gameData");
-                    var chessGame = new Gson().fromJson(gameData, ChessGame.class);
+                    var chessGame = new Gson().fromJson(gameData, ChessGame.class); //convert game data from Json into class structure
                     gameList.add(new GameData(gameID,whiteUsername,blackUsername,gameName,chessGame));
                 }
             } catch (SQLException e) {
@@ -117,7 +117,7 @@ public class SQLGameDAO implements GameDAO {
                 ps.setString(1, game.whiteUsername());
                 ps.setString(2, game.blackUsername());
                 ps.setString(3, game.gameName());
-                String gameData = new Gson().toJson(game.game());
+                String gameData = new Gson().toJson(game.game()); //convert game data into Json format
                 ps.setString(4,gameData);
                 ps.setInt(5,game.gameID());
 
@@ -137,7 +137,7 @@ public class SQLGameDAO implements GameDAO {
             try (var ps = conn.prepareStatement(statement)) {
                 ps.setInt(1, gameID);
                 try (var rs = ps.executeQuery()) {
-                    if(!rs.next()) {
+                    if(!rs.next()) { //if no more table to look at
                         return null;
                     }
                     if (playerColor.equals("WHITE")) {
