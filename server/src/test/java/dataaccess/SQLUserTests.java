@@ -1,6 +1,10 @@
 package dataaccess;
 
 
+import dataaccess.Exceptions.AlreadyTakenException;
+import dataaccess.Exceptions.BadRequestException;
+import dataaccess.Exceptions.DataAccessException;
+import dataaccess.Exceptions.InvalidUserException;
 import model.UserData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

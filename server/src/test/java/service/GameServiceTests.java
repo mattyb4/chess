@@ -1,11 +1,10 @@
 package service;
 
-import chess.ChessGame;
 import dataaccess.*;
+import dataaccess.Exceptions.*;
 import model.AuthData;
 import model.GameData;
 import model.GameSumm;
-import model.JoinRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,6 @@
 package dataaccess;
 
-import com.google.gson.Gson;
+import dataaccess.Exceptions.DataAccessException;
 import model.UserData;
 import org.mindrot.jbcrypt.BCrypt;
 

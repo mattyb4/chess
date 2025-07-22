@@ -1,7 +1,7 @@
 package handler;
 
 import com.google.gson.Gson;
-import dataaccess.*;
+import dataaccess.Exceptions.*;
 import model.GameData;
 import model.GameSumm;
 import model.JoinRequest;

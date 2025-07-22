@@ -1,11 +1,11 @@
 package dataaccess;
 
 import chess.ChessGame;
+import dataaccess.Exceptions.DataAccessException;
 import model.GameData;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class MemoryGameDAO implements GameDAO {
     private Collection<GameData> db;
