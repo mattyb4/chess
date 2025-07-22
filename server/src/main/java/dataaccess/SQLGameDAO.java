@@ -27,21 +27,7 @@ public class SQLGameDAO implements GameDAO {
                 )
                 """
         };
-        try {DatabaseManager.createDatabase(); }
-        catch (DataAccessException e) {
-            System.out.println("could not create db");
-            throw new RuntimeException(e);
-        }
-        try (var conn = DatabaseManager.getConnection()) {
-            for(var statement : createStatements) {
-                try (var preparedStatement = conn.prepareStatement(statement)) {
-                    preparedStatement.executeUpdate();
-                }
-            }
-        } catch (SQLException | DataAccessException ex) {
-            System.out.println("could not connect to db");
-            throw new RuntimeException(ex);
-        }
+        DatabaseStarter.startDB(createStatements);
     }
     @Override
     public void clear() throws DataAccessException {
