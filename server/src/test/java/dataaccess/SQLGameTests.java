@@ -1,6 +1,6 @@
 package dataaccess;
 
-import dataaccess.Exceptions.*;
+import dataaccess.exceptions.*;
 import model.AuthData;
 import model.GameData;
 import model.GameSumm;
