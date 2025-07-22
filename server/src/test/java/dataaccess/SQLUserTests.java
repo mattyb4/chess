@@ -10,6 +10,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import service.UserService;
+import service.UserServiceTests;
+
+import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -31,7 +34,10 @@ public class SQLUserTests {
     }
 
     @Test
-    public void positiveRegisterTest() throws DataAccessException, BadRequestException, AlreadyTakenException {
+    public void positiveRegisterTest() throws DataAccessException, BadRequestException, AlreadyTakenException, SQLException {
+        try (var conn = DatabaseManager.getConnection()) {
+            assertFalse(conn.isClosed(), "No open db connection");
+        }
         var testUser = new UserData("username", "password", "test@gmail.com");
         var authTest = userService.register(testUser);
 
@@ -40,7 +46,10 @@ public class SQLUserTests {
     }
     @Test
     @DisplayName("Register failure - duplicate username")
-    public void negativeRegisterTest() throws DataAccessException, BadRequestException, AlreadyTakenException {
+    public void negativeRegisterTest() throws DataAccessException, BadRequestException, AlreadyTakenException, SQLException {
+        try (var conn = DatabaseManager.getConnection()) {
+            assertFalse(conn.isClosed(), "No open db connection");
+        }
         var testUser = new UserData("username", "password", "test@gmail.com");
         userService.register(testUser);
         assertThrows(AlreadyTakenException.class, () -> {userService.register(testUser);});
@@ -48,7 +57,10 @@ public class SQLUserTests {
 
     @Test
     @DisplayName("Login Success")
-    public void positiveLoginTest() throws DataAccessException, BadRequestException, InvalidUserException, AlreadyTakenException {
+    public void positiveLoginTest() throws DataAccessException, BadRequestException, InvalidUserException, AlreadyTakenException, SQLException {
+        try (var conn = DatabaseManager.getConnection()) {
+            assertFalse(conn.isClosed(), "No open db connection");
+        }
         var testUser = new UserData("username", "password", "test@gmail.com");
         userService.register(testUser);
         var authTest = userService.login(testUser);
@@ -58,7 +70,10 @@ public class SQLUserTests {
 
     @Test
     @DisplayName("Login failure")
-    public void negativeLoginTest() throws DataAccessException, BadRequestException, AlreadyTakenException {
+    public void negativeLoginTest() throws DataAccessException, BadRequestException, AlreadyTakenException, SQLException {
+        try (var conn = DatabaseManager.getConnection()) {
+            assertFalse(conn.isClosed(), "No open db connection");
+        }
         var testUser = new UserData("username", "password", "test@gmail.com");
         userService.register(testUser);
         var wrongUser = new UserData("username", "wrongpass", "test@gmail.com");
@@ -67,7 +82,10 @@ public class SQLUserTests {
 
     @Test
     @DisplayName("Logout success")
-    public void positiveLogoutTest() throws DataAccessException, BadRequestException, AlreadyTakenException, InvalidUserException {
+    public void positiveLogoutTest() throws DataAccessException, BadRequestException, AlreadyTakenException, InvalidUserException, SQLException {
+        try (var conn = DatabaseManager.getConnection()) {
+            assertFalse(conn.isClosed(), "No open db connection");
+        }
         var testUser = new UserData("username", "password", "test@gmail.com");
         var authTest = userService.register(testUser);
         userService.logout(authTest.authToken());
@@ -76,7 +94,10 @@ public class SQLUserTests {
 
     @Test
     @DisplayName("Logout failure")
-    public void negativeLogoutTest() throws DataAccessException {
+    public void negativeLogoutTest() throws DataAccessException, SQLException {
+        try (var conn = DatabaseManager.getConnection()) {
+            assertFalse(conn.isClosed(), "No open db connection");
+        }
         assertThrows(InvalidUserException.class, () -> {userService.logout("");});
     }
 
