@@ -19,7 +19,7 @@ public class SQLAuthDAO implements AuthDAO{
                 )
                 """
         };
-        startDB(createStatements);
+        DatabaseStarter.startDB(createStatements);
     }
     @Override
     public void clear() throws DataAccessException {
@@ -79,24 +79,6 @@ public class SQLAuthDAO implements AuthDAO{
             }
         } catch (SQLException e) {
             throw new DataAccessException("Error deleting authToken from db", e);
-        }
-    }
-
-    public void startDB(String[] createStatements) {
-        try {DatabaseManager.createDatabase(); }
-        catch (DataAccessException e) {
-            System.out.println("could not create db");
-            throw new RuntimeException(e);
-        }
-        try (var conn = DatabaseManager.getConnection()) {
-            for(var statement : createStatements) {
-                try (var preparedStatement = conn.prepareStatement(statement)) {
-                    preparedStatement.executeUpdate();
-                }
-            }
-        } catch (SQLException | DataAccessException e) {
-            System.out.println("could not connect to db");
-            throw new RuntimeException(e);
         }
     }
 }

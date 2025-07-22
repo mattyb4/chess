@@ -21,7 +21,7 @@ public class SQLUserDAO implements UserDAO {
                 )
                 """
         };
-         startDB(createStatements);
+        DatabaseStarter.startDB(createStatements);
     }
 
     @Override
@@ -97,24 +97,6 @@ public class SQLUserDAO implements UserDAO {
             }
         } catch (SQLException e) {
             throw new DataAccessException("Failed to retrieve user info", e);
-        }
-    }
-
-    public void startDB(String[] createStatements) {
-        try {DatabaseManager.createDatabase(); }
-        catch (DataAccessException e) {
-            System.out.println("could not create db");
-            throw new RuntimeException(e);
-        }
-        try (var conn = DatabaseManager.getConnection()) {
-            for(var statement : createStatements) {
-                try (var preparedStatement = conn.prepareStatement(statement)) {
-                    preparedStatement.executeUpdate();
-                }
-            }
-        } catch (SQLException | DataAccessException e) {
-            System.out.println("could not connect to db");
-            throw new RuntimeException(e);
         }
     }
 }
