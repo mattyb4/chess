@@ -11,8 +11,9 @@ import org.junit.jupiter.api.Test;
 import service.GameService;
 import service.UserService;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import java.sql.SQLException;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SQLClearTest {
     private SQLUserDAO userDAO;
@@ -36,7 +37,11 @@ public class SQLClearTest {
 
     @Test
     @DisplayName("Functioning clear method")
-    public void positiveClearTest() throws DataAccessException, BadRequestException, InvalidUserException {
+    public void positiveClearTest() throws DataAccessException, BadRequestException, InvalidUserException, SQLException {
+        try (var conn = DatabaseManager.getConnection()) {
+            assertFalse(conn.isClosed(), "No open db connection");
+        }
+
         userDAO.createUser(new UserData("username","password", "test@gmail.com"));
         authDAO.createAuth(new AuthData("authtoken","username"));
         gameService.create("gamename","authtoken");

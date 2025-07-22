@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import service.GameService;
 
+import java.sql.SQLException;
 import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,7 +34,10 @@ public class SQLGameTests {
 
     @Test
     @DisplayName("Functioning game creation")
-    public void positiveCreateTest() throws DataAccessException, BadRequestException, InvalidUserException {
+    public void positiveCreateTest() throws DataAccessException, BadRequestException, InvalidUserException, SQLException {
+        try (var conn = DatabaseManager.getConnection()) {
+            assertFalse(conn.isClosed(), "No open db connection");
+        }
         AuthData testAuth = new AuthData("authtoken","username");
         authDAO.createAuth(testAuth);
         var gameData = gameService.create("testgame","authtoken");
@@ -45,13 +49,19 @@ public class SQLGameTests {
 
     @Test
     @DisplayName("Not logged in")
-    public void negativeCreateTest() throws DataAccessException {
+    public void negativeCreateTest() throws DataAccessException, SQLException {
+        try (var conn = DatabaseManager.getConnection()) {
+            assertFalse(conn.isClosed(), "No open db connection");
+        }
         assertThrows(InvalidUserException.class, () -> {gameService.create("gamename","noauthtoken");});
     }
 
     @Test
     @DisplayName("List games successfully")
-    public void positiveListTest() throws DataAccessException, BadRequestException, InvalidUserException {
+    public void positiveListTest() throws DataAccessException, BadRequestException, InvalidUserException, SQLException {
+        try (var conn = DatabaseManager.getConnection()) {
+            assertFalse(conn.isClosed(), "No open db connection");
+        }
         AuthData testAuth = new AuthData("authtoken","username");
         authDAO.createAuth(testAuth);
         gameService.create("testgame","authtoken");
@@ -63,14 +73,20 @@ public class SQLGameTests {
 
     @Test
     @DisplayName("Not logged in")
-    public void negativeListTest() throws DataAccessException {
+    public void negativeListTest() throws DataAccessException, SQLException {
+        try (var conn = DatabaseManager.getConnection()) {
+            assertFalse(conn.isClosed(), "No open db connection");
+        }
         assertThrows(InvalidUserException.class, () -> {gameService.listAllGames("invalidtoken");});
     }
 
     @Test
     @DisplayName("Successfully join game")
     public void positiveJoinTest()
-            throws DataAccessException, BadRequestException, InvalidUserException, InvalidInputException, AlreadyTakenException {
+            throws DataAccessException, BadRequestException, InvalidUserException, InvalidInputException, AlreadyTakenException, SQLException {
+        try (var conn = DatabaseManager.getConnection()) {
+            assertFalse(conn.isClosed(), "No open db connection");
+        }
         AuthData testAuth = new AuthData("authtoken","username");
         authDAO.createAuth(testAuth);
         var gameData = gameService.create("testgame",testAuth.authToken());
@@ -83,7 +99,10 @@ public class SQLGameTests {
 
     @Test
     @DisplayName("Unauthorized join attempt")
-    public void negativeJoinTest() throws DataAccessException {
+    public void negativeJoinTest() throws DataAccessException, SQLException {
+        try (var conn = DatabaseManager.getConnection()) {
+            assertFalse(conn.isClosed(), "No open db connection");
+        }
         assertThrows(InvalidUserException.class, () -> {gameService.join(1,"WHITE","invalidtoken");});
     }
 
