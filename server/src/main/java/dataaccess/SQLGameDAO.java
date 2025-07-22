@@ -153,22 +153,21 @@ public class SQLGameDAO implements GameDAO {
             try (var ps = conn.prepareStatement(statement)) {
                 ps.setInt(1, gameID);
                 try (var rs = ps.executeQuery()) {
-                    if(rs.next()) {
-                        if (playerColor.equals("WHITE")) {
-                            return rs.getString("whiteUsername");
-                        }
-                        if (playerColor.equals("BLACK")) {
-                            return rs.getString("blackUsername");
-                        } else {
-                            return null;
-                        }
+                    if(!rs.next()) {
+                        return null;
+                    }
+                    if (playerColor.equals("WHITE")) {
+                        return rs.getString("whiteUsername");
+                    }
+                    if (playerColor.equals("BLACK")) {
+                        return rs.getString("blackUsername");
+                    } else {
+                        return null;
                     }
                 }
             }
         } catch (SQLException e) {
             throw new DataAccessException("Error retrieving username info", e);
         }
-        //if info can't be found
-        return null;
     }
 }

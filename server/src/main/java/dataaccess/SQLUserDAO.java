@@ -97,19 +97,20 @@ public class SQLUserDAO implements UserDAO {
             try (var ps = conn.prepareStatement(statement)) {
                 ps.setString(1, username);
                 try (var rs = ps.executeQuery()) {
-                    if (rs.next()) {
-                        String storedHash = rs.getString("password");
-                        if(BCrypt.checkpw(password, storedHash)) {
-                            String email = rs.getString("email");
-                            return new UserData(username, storedHash, email);
-                        }
+                    if (!rs.next()) {
+                        return null;
                     }
+
+                    String storedHash = rs.getString("password");
+                    if(!BCrypt.checkpw(password, storedHash)) {
+                        return null;
+                    }
+                    String email = rs.getString("email");
+                    return new UserData(username, storedHash, email);
                 }
             }
         } catch (SQLException e) {
             throw new DataAccessException("Failed to retrieve user info", e);
         }
-        //if info can't be found
-        return null;
     }
 }
