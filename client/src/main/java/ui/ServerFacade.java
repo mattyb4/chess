@@ -2,6 +2,7 @@ package ui;
 
 import com.google.gson.Gson;
 import model.AuthData;
+import model.GameData;
 import model.JoinRequest;
 import model.UserData;
 import java.net.*;
@@ -9,50 +10,51 @@ import java.io.*;
 
 
 public class ServerFacade {
-    private final String serverURL;
-    private String serverUrl;
+    private final String serverUrl;
 
     public ServerFacade(String url) {
-        serverURL = url;
+        serverUrl = url;
     }
 
-    public AuthData register(UserData req) throws ResponseException {
-        return makeRequest("POST", "/user", req, AuthData.class);
+    public AuthData register(UserData request) throws ResponseException {
+        return makeRequest("POST", "/user", request, AuthData.class, null);
     }
 
-    public AuthData login(UserData req) throws ResponseException {
-        return makeRequest("POST", "/session", req, AuthData.class);
+    public AuthData login(UserData request) throws ResponseException {
+        return makeRequest("POST", "/session", request, AuthData.class, null);
     }
 
     public void logout(String authToken) throws ResponseException {
-        makeRequest("DELETE", "/session", null, Object.class);
+        makeRequest("DELETE", "/session", null, Object.class, authToken);
     }
 
     public void clear() throws ResponseException {
-        makeRequest("DELETE", "/db", null, null);
+        makeRequest("DELETE", "/db", null, null, null);
     }
 
-    public void create(String gameName, String authToken) throws ResponseException {
+    public GameData create(String gameName, String authToken) throws ResponseException {
         record CreateRequest(String gameName, String authToken) {}
-        var req = new CreateRequest(gameName, authToken);
-        makeRequest("POST", "/game", req, Object.class);
+        var request = new CreateRequest(gameName, authToken);
+        return makeRequest("POST", "/game", request, GameData.class, authToken);
     }
 
     public void listAllGames(String authToken) throws ResponseException {
-        makeRequest("GET", "/game", null, Object.class);
+        makeRequest("GET", "/game", null, Object.class, authToken);
     }
 
-    public void join(JoinRequest req) throws ResponseException {
-        makeRequest("PUT", "/game", req, Object.class);
+    public void join(JoinRequest request, String authToken) throws ResponseException {
+        makeRequest("PUT", "/game", request, Object.class, authToken);
     }
 
-    private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) throws ResponseException {
+    private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass, String authToken) throws ResponseException {
         try {
             URL url = (new URI(serverUrl + path)).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
             http.setRequestMethod(method);
             http.setDoOutput(true);
-
+            if (authToken != null) {
+                http.setRequestProperty("Authorization", authToken);
+            }
             writeBody(request, http);
             http.connect();
             throwIfNotSuccessful(http);

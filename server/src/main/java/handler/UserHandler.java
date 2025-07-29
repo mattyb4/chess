@@ -61,6 +61,10 @@ public class UserHandler {
     public String logout(Request req, Response res) throws DataAccessException {
         try {
             String authToken = req.headers("Authorization");
+            if (authToken == null || authToken.isBlank()) {
+                res.status(401);
+                return new Gson().toJson(new ErrorHandler("Error: missing auth token"));
+            }
             service.logout(authToken);
             res.status(200);
             return "{}";

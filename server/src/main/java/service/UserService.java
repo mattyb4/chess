@@ -52,7 +52,7 @@ public class UserService {
     }
 
     public void logout(String authToken) throws DataAccessException, InvalidUserException {
-        if(authDAO.getAuth(authToken) == null) {
+        if(authDAO.getAuth(authToken) == null || authToken.isBlank() || authDAO.getAuth(authToken) == null) {
             throw new InvalidUserException("Error: unauthorized");
         }
         else {
