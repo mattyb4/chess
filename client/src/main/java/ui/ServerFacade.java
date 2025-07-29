@@ -2,6 +2,7 @@ package ui;
 
 import com.google.gson.Gson;
 import model.AuthData;
+import model.JoinRequest;
 import model.UserData;
 import java.net.*;
 import java.io.*;
@@ -13,6 +14,36 @@ public class ServerFacade {
 
     public ServerFacade(String url) {
         serverURL = url;
+    }
+
+    public AuthData register(UserData req) throws ResponseException {
+        return makeRequest("POST", "/user", req, AuthData.class);
+    }
+
+    public AuthData login(UserData req) throws ResponseException {
+        return makeRequest("POST", "/session", req, AuthData.class);
+    }
+
+    public void logout(String authToken) throws ResponseException {
+        makeRequest("DELETE", "/session", null, Object.class);
+    }
+
+    public void clear() throws ResponseException {
+        makeRequest("DELETE", "/db", null, null);
+    }
+
+    public void create(String gameName, String authToken) throws ResponseException {
+        record CreateRequest(String gameName, String authToken) {}
+        var req = new CreateRequest(gameName, authToken);
+        makeRequest("POST", "/game", req, Object.class);
+    }
+
+    public void listAllGames(String authToken) throws ResponseException {
+        makeRequest("GET", "/game", null, Object.class);
+    }
+
+    public void join(JoinRequest req) throws ResponseException {
+        makeRequest("PUT", "/game", req, Object.class);
     }
 
     private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) throws ResponseException {
