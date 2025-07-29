@@ -1,16 +1,17 @@
 package ui;
 
 import com.google.gson.Gson;
-import model.AuthData;
-import model.GameData;
-import model.JoinRequest;
-import model.UserData;
+import model.*;
+import java.lang.reflect.Type;
+import com.google.gson.reflect.TypeToken;
 import java.net.*;
 import java.io.*;
+import java.util.Collection;
 
 
 public class ServerFacade {
     private final String serverUrl;
+    public record GamesListResponse(Collection<GameSumm> games) {}
 
     public ServerFacade(String url) {
         serverUrl = url;
@@ -29,7 +30,7 @@ public class ServerFacade {
     }
 
     public void clear() throws ResponseException {
-        makeRequest("DELETE", "/db", null, null, null);
+        makeRequest("DELETE", "/db", null, Object.class, null);
     }
 
     public GameData create(String gameName, String authToken) throws ResponseException {
@@ -38,15 +39,17 @@ public class ServerFacade {
         return makeRequest("POST", "/game", request, GameData.class, authToken);
     }
 
-    public void listAllGames(String authToken) throws ResponseException {
-        makeRequest("GET", "/game", null, Object.class, authToken);
+    public Collection<GameSumm> listAllGames(String authToken) throws ResponseException {
+        //Type collectionType = new TypeToken<Collection<GameSumm>>() {}.getType();
+        GamesListResponse response = makeRequest("GET", "/game", null, GamesListResponse.class, authToken);
+        return response.games();
     }
 
     public void join(JoinRequest request, String authToken) throws ResponseException {
         makeRequest("PUT", "/game", request, Object.class, authToken);
     }
 
-    private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass, String authToken) throws ResponseException {
+    private <T> T makeRequest(String method, String path, Object request, Type responseType, String authToken) throws ResponseException {
         try {
             URL url = (new URI(serverUrl + path)).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
@@ -58,7 +61,12 @@ public class ServerFacade {
             writeBody(request, http);
             http.connect();
             throwIfNotSuccessful(http);
-            return readBody(http, responseClass);
+
+            try (InputStream respBody = http.getInputStream()) {
+                InputStreamReader reader = new InputStreamReader(respBody);
+                return new Gson().fromJson(reader, responseType);
+            }
+
         } catch (ResponseException ex) {
             throw ex;
         } catch (Exception ex) {

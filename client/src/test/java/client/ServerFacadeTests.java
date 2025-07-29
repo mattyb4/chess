@@ -1,11 +1,15 @@
 package client;
 
 import model.AuthData;
+import model.GameSumm;
+import model.JoinRequest;
 import model.UserData;
 import org.junit.jupiter.api.*;
 import server.Server;
 import ui.ResponseException;
 import ui.ServerFacade;
+
+import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -71,6 +75,33 @@ public class ServerFacadeTests {
         assertNull(gameData.whiteUsername());
         assertNull(gameData.blackUsername());
         assertEquals("testgame", gameData.gameName());
+    }
+
+    @Test
+    public void positiveList() throws Exception {
+        var user = new UserData("user", "pass", "email");
+        facade.register(user);
+        AuthData auth = facade.login(user);
+        facade.create("testgame", auth.authToken());
+        Collection<GameSumm> games = facade.listAllGames(auth.authToken());
+        GameSumm summary = games.iterator().next();
+        assertNotNull(games);
+        assertEquals("testgame", summary.gameName());
+    }
+
+    @Test
+    public void positiveJoin() throws Exception {
+        var user = new UserData("user", "pass", "email");
+        facade.register(user);
+        AuthData auth = facade.login(user);
+        var gameData = facade.create("testgame", auth.authToken());
+        int gameID = gameData.gameID();
+        var request = new JoinRequest("WHITE", gameID);
+        facade.join(request, auth.authToken());
+        var updatedGames = facade.listAllGames(auth.authToken());
+        var updatedGame = updatedGames.iterator().next();
+        assertEquals("user", updatedGame.whiteUsername());
+        assertEquals("testgame", updatedGame.gameName());
     }
 
 }
