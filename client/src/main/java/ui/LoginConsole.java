@@ -9,6 +9,9 @@ public class LoginConsole {
 
         var scanner = new Scanner(System.in);
         var result = "";
+        while(!result.equals("quit")) {
+            String line = scanner.nextLine();
+        }
 
     }
 }
