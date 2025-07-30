@@ -1,5 +1,6 @@
 package dataaccess;
 
+import dataaccess.exceptions.AlreadyTakenException;
 import dataaccess.exceptions.BadRequestException;
 import dataaccess.exceptions.DataAccessException;
 import dataaccess.exceptions.InvalidUserException;
@@ -37,7 +38,7 @@ public class SQLClearTest {
 
     @Test
     @DisplayName("Functioning clear method")
-    public void positiveClearTest() throws DataAccessException, BadRequestException, InvalidUserException, SQLException {
+    public void positiveClearTest() throws DataAccessException, BadRequestException, InvalidUserException, SQLException, AlreadyTakenException {
         try (var conn = DatabaseManager.getConnection()) {
             assertFalse(conn.isClosed(), "No open db connection");
         }

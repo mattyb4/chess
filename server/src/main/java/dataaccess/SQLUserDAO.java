@@ -1,10 +1,11 @@
 package dataaccess;
 
-import dataaccess.exceptions.DataAccessException;
+import dataaccess.exceptions.*;
 import model.UserData;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 public class SQLUserDAO implements UserDAO {
 
@@ -59,16 +60,18 @@ public class SQLUserDAO implements UserDAO {
     }
 
     @Override
-    public void createUser(UserData user) throws DataAccessException {
+    public void createUser(UserData user) throws DataAccessException, AlreadyTakenException {
         try (var conn = DatabaseManager.getConnection()) {
             var statement = "INSERT INTO user (username, password, email) VALUES (?,?,?)";
             try (var ps = conn.prepareStatement(statement)) {
                 ps.setString(1, user.username());
                 //encrypt password
                 String hashedPassword = BCrypt.hashpw(user.password(), BCrypt.gensalt());
-                ps.setString(2,hashedPassword);
-                ps.setString(3,user.email());
+                ps.setString(2, hashedPassword);
+                ps.setString(3, user.email());
                 ps.executeUpdate();
+            } catch (SQLIntegrityConstraintViolationException e) {
+                throw new AlreadyTakenException("Username already taken");
             } catch (SQLException e) {
                 throw new DataAccessException("Error adding user to db", e);
             }
