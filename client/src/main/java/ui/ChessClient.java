@@ -57,7 +57,7 @@ public class ChessClient {
         var authData = server.login(userData);
         authToken = authData.authToken();
         state = State.SIGNEDIN;
-        return "Successfully logged in";
+        return "Successfully logged in as " + userData.username();
     }
 
     public String helpPrompt() throws ResponseException {
@@ -85,7 +85,7 @@ public class ChessClient {
         var authData = server.register(userData);
         authToken = authData.authToken();
         state = State.SIGNEDIN;
-        return "You are registered and logged in";
+        return "You are registered and logged in as " + userData.username();
     }
 
     public String logout() throws ResponseException {
@@ -96,11 +96,15 @@ public class ChessClient {
     }
 
     public String createGame(String... params) throws ResponseException {
-        return "not implemented yet";
+        System.out.println("Creating game...");
+        var gameData = server.create(params[0],authToken);
+        return "Successfully created game called " + gameData.gameName();
     }
 
     public String listGames() throws ResponseException {
-        return "not implemented yet";
+        System.out.println("Here is a list of all active games: ");
+        var gameList = server.listAllGames(authToken);
+        return "games: " + gameList;
     }
 
     public String joinGame(String... params) throws ResponseException {
