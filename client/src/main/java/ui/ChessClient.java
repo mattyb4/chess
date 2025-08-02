@@ -1,5 +1,6 @@
 package ui;
 
+import model.UserData;
 import ui.ServerFacade;
 
 import java.util.Arrays;
@@ -29,7 +30,7 @@ public class ChessClient {
                 return switch (cmd) {
                     case "login" -> login(params);
                     case "register" -> register(params);
-                    case "quit" -> "quit";
+                    case "quit" -> "exiting program";
                     default -> helpPrompt();
                 };
             }
@@ -40,7 +41,7 @@ public class ChessClient {
                     case "list" -> listGames();
                     case "join" -> joinGame(params);
                     case "observe" -> observeGame(params);
-                    case "quit" -> "quit";
+                    case "quit" -> "exiting program";
                     default -> helpPrompt();
                 };
             }
@@ -50,12 +51,11 @@ public class ChessClient {
     }
 
     public String login(String... params) throws ResponseException {
-        if(params.length >= 1) {
-            state = State.SIGNEDIN;
-            userName = String.join("-", params);
-            return String.format("You signed in as %s.", userName);
-        }
-        throw new ResponseException(400, "Expected: <yourname>");
+        System.out.println("logging in... ");
+        var userData = new UserData(params[0],params[1],"");
+        server.login(userData);
+        state = State.SIGNEDIN;
+        return "Successfully logged in";
     }
 
     public String helpPrompt() throws ResponseException {
@@ -78,7 +78,11 @@ public class ChessClient {
     }
 
     public String register(String... params) throws ResponseException {
-        return "not implemented yet";
+        System.out.println("registering user...");
+        var userData = new UserData(params[0],params[1],params[2]);
+        server.register(userData);
+        state = State.SIGNEDIN;
+        return "You are registered and logged in";
     }
 
     public String logout() throws ResponseException {
