@@ -33,7 +33,7 @@ public class ChessClient {
                     default -> helpPrompt();
                 };
             }
-            if (state == State.SIGNEDIN) {
+            else {
                 return switch (cmd) {
                     case "logout" -> logout();
                     case "create" -> createGame(params);
@@ -47,7 +47,6 @@ public class ChessClient {
         } catch (ResponseException ex) {
             return ex.getMessage();
         }
-        return null;
     }
 
     public String login(String... params) throws ResponseException {
@@ -60,9 +59,22 @@ public class ChessClient {
     }
 
     public String helpPrompt() throws ResponseException {
-        //if state is signed out
-        return "help prompt stuff";
-        //if state is signed in - other stuff
+        if (state == State.SIGNEDOUT) {
+            System.out.println("register <USERNAME> <PASSWORD> <EMAIL> - to create an account");
+            System.out.println("login <USERNAME> <PASSWORD> - to log in");
+            System.out.println("quit - quit program");
+            System.out.println("help - list possible commands");
+        }
+        else {
+            System.out.println("create <NAME> - create game with given name");
+            System.out.println("list - list all current games");
+            System.out.println("join <ID> [WHITE|BLACK] - join a game with given ID on given team");
+            System.out.println("observer <ID> - observe game with given ID");
+            System.out.println("logout - logout of program");
+            System.out.println("quit - quit program");
+            System.out.println("help - list possible commands");
+        }
+        return "What would you like to do?";
     }
 
     public String register(String... params) throws ResponseException {
