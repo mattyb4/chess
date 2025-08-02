@@ -10,6 +10,7 @@ public class ChessClient {
     private final String serverUrl;
     private String userName = null;
     private State state = State.SIGNEDOUT;
+    private String authToken;
 
     public ChessClient(String serverUrl) {
         server = new ServerFacade(serverUrl);
@@ -30,7 +31,7 @@ public class ChessClient {
                 return switch (cmd) {
                     case "login" -> login(params);
                     case "register" -> register(params);
-                    case "quit" -> "exiting program";
+                    case "quit" -> "quit";
                     default -> helpPrompt();
                 };
             }
@@ -41,7 +42,7 @@ public class ChessClient {
                     case "list" -> listGames();
                     case "join" -> joinGame(params);
                     case "observe" -> observeGame(params);
-                    case "quit" -> "exiting program";
+                    case "quit" -> "quit";
                     default -> helpPrompt();
                 };
             }
@@ -53,7 +54,8 @@ public class ChessClient {
     public String login(String... params) throws ResponseException {
         System.out.println("logging in... ");
         var userData = new UserData(params[0],params[1],"");
-        server.login(userData);
+        var authData = server.login(userData);
+        authToken = authData.authToken();
         state = State.SIGNEDIN;
         return "Successfully logged in";
     }
@@ -80,13 +82,17 @@ public class ChessClient {
     public String register(String... params) throws ResponseException {
         System.out.println("registering user...");
         var userData = new UserData(params[0],params[1],params[2]);
-        server.register(userData);
+        var authData = server.register(userData);
+        authToken = authData.authToken();
         state = State.SIGNEDIN;
         return "You are registered and logged in";
     }
 
     public String logout() throws ResponseException {
-        return "not implemented yet";
+        System.out.println("logging out...");
+        server.logout(authToken);
+        state = State.SIGNEDOUT;
+        return "Successfully logged out";
     }
 
     public String createGame(String... params) throws ResponseException {
