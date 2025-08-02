@@ -120,7 +120,8 @@ public class ChessClient {
 
     public String joinGame(String... params) throws ResponseException {
         System.out.println("Joining game... ");
-        var request = new JoinRequest(params[1],Integer.parseInt(params[0]));
+        var request = new JoinRequest(params[1].toUpperCase(),Integer.parseInt(params[0]));
+        System.out.println("join request is" + request);
         server.join(request,authToken);
         return "Successfully joined game";
     }

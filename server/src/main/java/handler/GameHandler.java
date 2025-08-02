@@ -75,7 +75,7 @@ public class GameHandler {
             return new Gson().toJson(new ErrorHandler("Error: color already taken"));
         } catch (BadRequestException e) {
             res.status(400);
-            return new Gson().toJson(new ErrorHandler("Error: valid color not specifiied"));
+            return new Gson().toJson(new ErrorHandler("Error: valid color not specified"));
         } catch (DataAccessException e) {
             res.status(500);
             return new Gson().toJson(new ErrorHandler("Error: Internal server error"));
