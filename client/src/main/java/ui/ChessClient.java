@@ -1,5 +1,6 @@
 package ui;
 
+import model.JoinRequest;
 import model.UserData;
 import ui.ServerFacade;
 
@@ -32,7 +33,8 @@ public class ChessClient {
                     case "login" -> login(params);
                     case "register" -> register(params);
                     case "quit" -> "quit";
-                    default -> helpPrompt();
+                    case "help" -> helpPrompt();
+                    default -> "Invalid input - type 'help' to see list of valid inputs";
                 };
             }
             else {
@@ -43,7 +45,8 @@ public class ChessClient {
                     case "join" -> joinGame(params);
                     case "observe" -> observeGame(params);
                     case "quit" -> "quit";
-                    default -> helpPrompt();
+                    case "help" -> helpPrompt();
+                    default -> "Invalid input - type 'help' to see list of valid inputs";
                 };
             }
         } catch (ResponseException ex) {
@@ -57,17 +60,21 @@ public class ChessClient {
         var authData = server.login(userData);
         authToken = authData.authToken();
         state = State.SIGNEDIN;
-        return "Successfully logged in as " + userData.username();
+        System.out.println("Successfully logged in as " + userData.username());
+        System.out.println();
+        return helpPrompt();
     }
 
     public String helpPrompt() throws ResponseException {
         if (state == State.SIGNEDOUT) {
+            System.out.println("Here is a list of available commands:");
             System.out.println("register <USERNAME> <PASSWORD> <EMAIL> - to create an account");
             System.out.println("login <USERNAME> <PASSWORD> - to log in");
             System.out.println("quit - quit program");
             System.out.println("help - list possible commands");
         }
         else {
+            System.out.println("Here is a list of newly available commands:");
             System.out.println("create <NAME> - create game with given name");
             System.out.println("list - list all current games");
             System.out.println("join <ID> [WHITE|BLACK] - join a game with given ID on given team");
@@ -85,14 +92,18 @@ public class ChessClient {
         var authData = server.register(userData);
         authToken = authData.authToken();
         state = State.SIGNEDIN;
-        return "You are registered and logged in as " + userData.username();
+        System.out.println("You are registered and logged in as " + userData.username());
+        System.out.println();
+        return helpPrompt();
     }
 
     public String logout() throws ResponseException {
         System.out.println("logging out...");
         server.logout(authToken);
         state = State.SIGNEDOUT;
-        return "Successfully logged out";
+        System.out.println("Successfully logged out");
+        System.out.println();
+        return helpPrompt();
     }
 
     public String createGame(String... params) throws ResponseException {
@@ -108,7 +119,10 @@ public class ChessClient {
     }
 
     public String joinGame(String... params) throws ResponseException {
-        return "not implemented yet";
+        System.out.println("Joining game... ");
+        var request = new JoinRequest(params[1],Integer.parseInt(params[0]));
+        server.join(request,authToken);
+        return "Successfully joined game";
     }
 
     public String observeGame(String... params) throws ResponseException {
