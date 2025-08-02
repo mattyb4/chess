@@ -1,5 +1,10 @@
 package ui;
 
+import chess.ChessBoard;
+import chess.ChessGame;
+import chess.ChessPiece;
+import chess.ChessPosition;
+import model.GameData;
 import model.JoinRequest;
 import model.UserData;
 import ui.ServerFacade;
@@ -12,6 +17,7 @@ public class ChessClient {
     private String userName = null;
     private State state = State.SIGNEDOUT;
     private String authToken;
+    private ChessGame game;
 
     public ChessClient(String serverUrl) {
         server = new ServerFacade(serverUrl);
@@ -109,6 +115,7 @@ public class ChessClient {
     public String createGame(String... params) throws ResponseException {
         System.out.println("Creating game...");
         var gameData = server.create(params[0],authToken);
+        printBoard(gameData.game(),true);
         return "Successfully created game called " + gameData.gameName();
     }
 
@@ -128,6 +135,52 @@ public class ChessClient {
 
     public String observeGame(String... params) throws ResponseException {
         return "not implemented yet";
+    }
+
+    public void printBoard(ChessGame game, boolean whitePerspective) {
+        var board = game.getBoard();
+
+        int[] rows = whitePerspective ? new int[]{8,7,6,5,4,3,2,1} : new int[]{1,2,3,4,5,6,7,8};
+        int[] cols = whitePerspective ? new int[]{1,2,3,4,5,6,7,8} : new int[]{8,7,6,5,4,3,2,1};
+        printColumnLabels(cols);
+        for (int row : rows) {
+            System.out.print(" " + row + " ");
+            for (int col : cols) {
+                ChessPosition currentPos = new ChessPosition(row, col);
+                ChessPiece piece = board.getPiece(currentPos);
+
+                String squareColor = (row + col) % 2 != 0 ? EscapeSequences.SET_BG_COLOR_DARK_GREY : EscapeSequences.SET_BG_COLOR_LIGHT_GREY;
+                String pieceString = EscapeSequences.EMPTY;
+                if (piece != null) {
+                    pieceString = getPieceSymbol(piece);
+                }
+                System.out.print(squareColor + pieceString);
+            }
+            System.out.print(EscapeSequences.RESET_BG_COLOR + " " + row + "\n");
+        }
+        printColumnLabels(cols);
+    }
+
+    public String getPieceSymbol(ChessPiece piece) {
+        boolean isWhite = piece.getTeamColor() == ChessGame.TeamColor.WHITE;
+
+        return switch (piece.getPieceType()) {
+            case KING -> isWhite ? EscapeSequences.WHITE_KING : EscapeSequences.BLACK_KING;
+            case QUEEN -> isWhite ? EscapeSequences.WHITE_QUEEN : EscapeSequences.BLACK_QUEEN;
+            case BISHOP -> isWhite ? EscapeSequences.WHITE_BISHOP : EscapeSequences.BLACK_BISHOP;
+            case KNIGHT -> isWhite ? EscapeSequences.WHITE_KNIGHT : EscapeSequences.BLACK_KNIGHT;
+            case ROOK -> isWhite ? EscapeSequences.WHITE_ROOK : EscapeSequences.BLACK_ROOK;
+            case PAWN -> isWhite ? EscapeSequences.WHITE_PAWN : EscapeSequences.BLACK_PAWN;
+        };
+    }
+
+    public void printColumnLabels(int[] cols) {
+        System.out.print(" ");
+        for (int col : cols) {
+            char label = (char) ('a' + col - 1);
+            System.out.print(EscapeSequences.EMPTY.charAt(0) + " " + label + " ");
+        }
+        System.out.println();
     }
 
 }

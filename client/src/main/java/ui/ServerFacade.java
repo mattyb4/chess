@@ -46,7 +46,7 @@ public class ServerFacade {
     }
 
     public void join(JoinRequest request, String authToken) throws ResponseException {
-        makeRequest("PUT", "/game", request, Object.class, authToken);
+        makeRequest("PUT", "/game", request, GameData.class, authToken);
     }
 
     private <T> T makeRequest(String method, String path, Object request, Type responseType, String authToken) throws ResponseException {
