@@ -83,7 +83,7 @@ public class ChessClient {
             System.out.println("quit - quit program");
             System.out.println("help - list possible commands");
         }
-        else {
+        else { //state is presumably SIGNEDIN
             System.out.println("Here is a list of newly available commands:");
             System.out.println("create <NAME> - create game with given name");
             System.out.println("list - list all current games");
@@ -135,6 +135,7 @@ public class ChessClient {
         var gameList = server.listAllGames(authToken);
         StringBuilder output = new StringBuilder("Here is a list of all active games:\n");
 
+        //this block of code reformats the JSON GameSumm list to look normal
         int i = 1;
         for (GameSumm game : gameList) {
             output.append(String.format("%d. Game ID: %d | Name: %s | White: %s | Black: %s%n",
@@ -161,8 +162,8 @@ public class ChessClient {
         String teamColor = params[1].toUpperCase();
         var request = new JoinRequest(teamColor,gameID);
         server.join(request,authToken);
-
         var gameData = server.getGame(gameID, authToken);
+        //print boards from both perspectives per phase 5 passoff instructions
         System.out.println("Printing board from White perspective");
         printBoard(gameData.game(),true);
         System.out.println("Printing board from Black perspective");
@@ -185,12 +186,13 @@ public class ChessClient {
             return "Error: invalid game ID. Please enter a number.";
         }
         var gameData = server.getGame(gameID, authToken);
-        printBoard(gameData.game(),true);
+        printBoard(gameData.game(),true); //will always observe from White's perspective
         return "Now observing game " + gameID + " from White perspective";
     }
 
     public void printBoard(ChessGame game, boolean whitePerspective) {
         var board = game.getBoard();
+        //if the player is White team, print row numbers in descending order - otherwise print the other way
         int[] rows = whitePerspective ? new int[]{8,7,6,5,4,3,2,1} : new int[]{1,2,3,4,5,6,7,8};
         int[] cols = whitePerspective ? new int[]{1,2,3,4,5,6,7,8} : new int[]{8,7,6,5,4,3,2,1};
         //print the column letters
@@ -213,6 +215,7 @@ public class ChessClient {
         printColumnLabels(cols); //print the column letters on the bottom of the board
     }
 
+    //created this method to simplify placing proper pieces on the board from EscapeSequences
     public String getPieceSymbol(ChessPiece piece) {
         boolean isWhite = piece.getTeamColor() == ChessGame.TeamColor.WHITE;
         return switch (piece.getPieceType()) {
@@ -225,6 +228,7 @@ public class ChessClient {
         };
     }
 
+    //created this method to help more consistently place column letter labels on the board
     public void printColumnLabels(int[] cols) {
         System.out.print(" ");
         for (int col : cols) {

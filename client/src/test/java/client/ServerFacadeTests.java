@@ -45,7 +45,7 @@ public class ServerFacadeTests {
     }
 
     @Test
-    public void negativeRegister() throws Exception {
+    public void negativeRegister() throws ResponseException {
         var testUser = new UserData("username", "password", "test@gmail.com");
         facade.register(testUser);
         assertThrows(ResponseException.class, () -> {facade.register(testUser);});

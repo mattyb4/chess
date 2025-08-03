@@ -14,14 +14,13 @@ public class LoginConsole {
 
         var scanner = new Scanner(System.in);
         var result = "";
-        while(!result.equals("quit")) {
+        while(!result.equals("quit")) {//keep program going until quit command is used
             String line = scanner.nextLine();
-
             try {
                 result = client.eval(line);
                 System.out.println(result);
             } catch (Throwable e) {
-                System.out.println(e.toString());
+                System.out.println(e);
             }
         }
         System.out.println();

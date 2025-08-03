@@ -86,7 +86,6 @@ public class GameHandler {
         try {
             int gameID = Integer.parseInt(req.params(":id"));
             var serializer = new Gson();
-            //var gameData = serializer.fromJson(req.body(), GameData.class);
             var game = service.getGame(gameID, req.headers("Authorization"));
             var result = serializer.toJson(game);
             res.status(200);
