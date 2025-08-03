@@ -76,6 +76,18 @@ public class GameService {
         }
     }
 
+    public GameData getGame(int gameID, String authToken) throws DataAccessException, InvalidUserException, InvalidInputException {
+        AuthData authData = authDAO.getAuth(authToken);
+        if(authData == null) {
+            throw new InvalidUserException("Error: unauthorized");
+        }
+        GameData game = gameDAO.getGame(gameID);
+        if(game == null) {
+            throw new InvalidInputException("Error: game not found");
+        }
+        return game;
+    }
+
     public void clear() throws DataAccessException {
         gameDAO.clear();
     }

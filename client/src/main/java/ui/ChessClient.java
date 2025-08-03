@@ -115,7 +115,6 @@ public class ChessClient {
     public String createGame(String... params) throws ResponseException {
         System.out.println("Creating game...");
         var gameData = server.create(params[0],authToken);
-        printBoard(gameData.game(),true);
         return "Successfully created game called " + gameData.gameName();
     }
 
@@ -127,9 +126,13 @@ public class ChessClient {
 
     public String joinGame(String... params) throws ResponseException {
         System.out.println("Joining game... ");
-        var request = new JoinRequest(params[1].toUpperCase(),Integer.parseInt(params[0]));
+        int gameID = Integer.parseInt(params[0]);
+        var request = new JoinRequest(params[1].toUpperCase(),gameID);
         System.out.println("join request is" + request);
         server.join(request,authToken);
+
+        var gameData = server.getGame(gameID, authToken);
+        printBoard(gameData.game(),true);
         return "Successfully joined game";
     }
 

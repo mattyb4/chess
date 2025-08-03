@@ -40,7 +40,6 @@ public class ServerFacade {
     }
 
     public Collection<GameSumm> listAllGames(String authToken) throws ResponseException {
-        //Type collectionType = new TypeToken<Collection<GameSumm>>() {}.getType();
         GamesListResponse response = makeRequest("GET", "/game", null, GamesListResponse.class, authToken);
         return response.games();
     }
@@ -49,6 +48,9 @@ public class ServerFacade {
         makeRequest("PUT", "/game", request, GameData.class, authToken);
     }
 
+    public GameData getGame(int gameID, String authToken) throws ResponseException {
+        return makeRequest("GET", "/game/" + gameID, null, GameData.class, authToken);
+    }
     private <T> T makeRequest(String method, String path, Object request, Type responseType, String authToken) throws ResponseException {
         try {
             URL url = (new URI(serverUrl + path)).toURL();

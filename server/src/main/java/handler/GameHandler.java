@@ -81,4 +81,25 @@ public class GameHandler {
             return new Gson().toJson(new ErrorHandler("Error: Internal server error"));
         }
     }
+
+    public String getGame(Request req, Response res) throws DataAccessException {
+        try {
+            int gameID = Integer.parseInt(req.params(":id"));
+            var serializer = new Gson();
+            //var gameData = serializer.fromJson(req.body(), GameData.class);
+            var game = service.getGame(gameID, req.headers("Authorization"));
+            var result = serializer.toJson(game);
+            res.status(200);
+            return result;
+        } catch (InvalidInputException e) {
+            res.status(400);
+            return new Gson().toJson(new ErrorHandler("Error: game not found"));
+        } catch (InvalidUserException e) {
+            res.status(401);
+            return new Gson().toJson(new ErrorHandler("Error: unauthorized"));
+        } catch (NumberFormatException e) {
+            res.status(400);
+            return new Gson().toJson(new ErrorHandler("Error: invalid game ID"));
+        }
+    }
 }
