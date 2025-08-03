@@ -61,6 +61,9 @@ public class ChessClient {
     }
 
     public String login(String... params) throws ResponseException {
+        if (params.length < 2) {
+            return "Error: not enough inputs";
+        }
         System.out.println("logging in... ");
         var userData = new UserData(params[0],params[1],"");
         var authData = server.login(userData);
@@ -93,6 +96,9 @@ public class ChessClient {
     }
 
     public String register(String... params) throws ResponseException {
+        if (params.length < 3) {
+            return "Error: not enough inputs";
+        }
         System.out.println("registering user...");
         var userData = new UserData(params[0],params[1],params[2]);
         var authData = server.register(userData);
@@ -113,6 +119,9 @@ public class ChessClient {
     }
 
     public String createGame(String... params) throws ResponseException {
+        if (params.length < 1) {
+            return "Error: no game name specified";
+        }
         System.out.println("Creating game...");
         var gameData = server.create(params[0],authToken);
         return "Successfully created game called " + gameData.gameName();
@@ -125,6 +134,9 @@ public class ChessClient {
     }
 
     public String joinGame(String... params) throws ResponseException {
+        if (params.length < 2) {
+            return "Error: not enough inputs";
+        }
         System.out.println("Joining game... ");
         int gameID = Integer.parseInt(params[0]);
         var request = new JoinRequest(params[1].toUpperCase(),gameID);
@@ -140,6 +152,9 @@ public class ChessClient {
     }
 
     public String observeGame(String... params) throws ResponseException {
+        if (params.length < 1) {
+            return "Error: no game ID specified";
+        }
         System.out.println("Joining game as observer...");
         int gameID = Integer.parseInt(params[0]);
         var gameData = server.getGame(gameID, authToken);
@@ -149,9 +164,9 @@ public class ChessClient {
 
     public void printBoard(ChessGame game, boolean whitePerspective) {
         var board = game.getBoard();
-
         int[] rows = whitePerspective ? new int[]{8,7,6,5,4,3,2,1} : new int[]{1,2,3,4,5,6,7,8};
         int[] cols = whitePerspective ? new int[]{1,2,3,4,5,6,7,8} : new int[]{8,7,6,5,4,3,2,1};
+        //print the column letters
         printColumnLabels(cols);
         for (int row : rows) {
             System.out.print(" " + row + " ");
@@ -168,12 +183,11 @@ public class ChessClient {
             }
             System.out.print(EscapeSequences.RESET_BG_COLOR + " " + row + "\n");
         }
-        printColumnLabels(cols);
+        printColumnLabels(cols); //print the column letters on the bottom of the board
     }
 
     public String getPieceSymbol(ChessPiece piece) {
         boolean isWhite = piece.getTeamColor() == ChessGame.TeamColor.WHITE;
-
         return switch (piece.getPieceType()) {
             case KING -> isWhite ? EscapeSequences.WHITE_KING : EscapeSequences.BLACK_KING;
             case QUEEN -> isWhite ? EscapeSequences.WHITE_QUEEN : EscapeSequences.BLACK_QUEEN;
