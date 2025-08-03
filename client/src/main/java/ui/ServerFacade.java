@@ -51,6 +51,7 @@ public class ServerFacade {
     public GameData getGame(int gameID, String authToken) throws ResponseException {
         return makeRequest("GET", "/game/" + gameID, null, GameData.class, authToken);
     }
+
     private <T> T makeRequest(String method, String path, Object request, Type responseType, String authToken) throws ResponseException {
         try {
             URL url = (new URI(serverUrl + path)).toURL();
@@ -97,19 +98,6 @@ public class ServerFacade {
 
             throw new ResponseException(status, "other failure: " + status);
         }
-    }
-
-    private static <T> T readBody(HttpURLConnection http, Class<T> responseClass) throws IOException {
-        T response = null;
-        if (http.getContentLength() < 0) {
-            try (InputStream respBody = http.getInputStream()) {
-                InputStreamReader reader = new InputStreamReader(respBody);
-                if (responseClass != null) {
-                    response = new Gson().fromJson(reader, responseClass);
-                }
-            }
-        }
-        return response;
     }
 
     private boolean isSuccessful(int status) {

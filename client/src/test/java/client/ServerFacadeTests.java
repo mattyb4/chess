@@ -78,7 +78,7 @@ public class ServerFacadeTests {
         var exception = assertThrows(ResponseException.class, () -> {
             facade.logout(authTest.authToken());
         });
-        assertNotEquals(200, exception.StatusCode());
+        assertNotEquals(200, exception.statusCode());
     }
 
     @Test
@@ -86,7 +86,7 @@ public class ServerFacadeTests {
         var exception = assertThrows(ResponseException.class, () -> {
             facade.logout("");
         });
-        assertNotEquals(200, exception.StatusCode());
+        assertNotEquals(200, exception.statusCode());
     }
 
     @Test
