@@ -84,7 +84,7 @@ public class ChessClient {
             System.out.println("create <NAME> - create game with given name");
             System.out.println("list - list all current games");
             System.out.println("join <ID> [WHITE|BLACK] - join a game with given ID on given team");
-            System.out.println("observer <ID> - observe game with given ID");
+            System.out.println("observe <ID> - observe game with given ID");
             System.out.println("logout - logout of program");
             System.out.println("quit - quit program");
             System.out.println("help - list possible commands");
@@ -132,12 +132,19 @@ public class ChessClient {
         server.join(request,authToken);
 
         var gameData = server.getGame(gameID, authToken);
+        System.out.println("Printing board from White perspective");
         printBoard(gameData.game(),true);
-        return "Successfully joined game";
+        System.out.println("Printing board from Black perspective");
+        printBoard(gameData.game(),false);
+        return "Successfully joined game " + gameID;
     }
 
     public String observeGame(String... params) throws ResponseException {
-        return "not implemented yet";
+        System.out.println("Joining game as observer...");
+        int gameID = Integer.parseInt(params[0]);
+        var gameData = server.getGame(gameID, authToken);
+        printBoard(gameData.game(),true);
+        return "Now observing game " + gameID;
     }
 
     public void printBoard(ChessGame game, boolean whitePerspective) {
