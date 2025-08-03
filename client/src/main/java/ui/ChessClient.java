@@ -5,6 +5,7 @@ import chess.ChessGame;
 import chess.ChessPiece;
 import chess.ChessPosition;
 import model.GameData;
+import model.GameSumm;
 import model.JoinRequest;
 import model.UserData;
 import ui.ServerFacade;
@@ -61,8 +62,8 @@ public class ChessClient {
     }
 
     public String login(String... params) throws ResponseException {
-        if (params.length < 2) {
-            return "Error: not enough inputs";
+        if (params.length != 2) {
+            return "Error: invalid inputs. Format must be 'login <USERNAME> <PASSWORD>'";
         }
         System.out.println("logging in... ");
         var userData = new UserData(params[0],params[1],"");
@@ -96,8 +97,8 @@ public class ChessClient {
     }
 
     public String register(String... params) throws ResponseException {
-        if (params.length < 3) {
-            return "Error: not enough inputs";
+        if (params.length != 3) {
+            return "Error: invalid inputs. Format must be 'register <USERNAME> <PASSWORD> <EMAIL>'";
         }
         System.out.println("registering user...");
         var userData = new UserData(params[0],params[1],params[2]);
@@ -122,25 +123,43 @@ public class ChessClient {
         if (params.length < 1) {
             return "Error: no game name specified";
         }
+        if (params.length > 1) {
+            return "Error: too many inputs";
+        }
         System.out.println("Creating game...");
         var gameData = server.create(params[0],authToken);
         return "Successfully created game called " + gameData.gameName();
     }
 
     public String listGames() throws ResponseException {
-        System.out.println("Here is a list of all active games: ");
         var gameList = server.listAllGames(authToken);
-        return "games: " + gameList;
+        StringBuilder output = new StringBuilder("Here is a list of all active games:\n");
+
+        int i = 1;
+        for (GameSumm game : gameList) {
+            output.append(String.format("%d. Game ID: %d | Name: %s | White: %s | Black: %s%n",
+                    i++, game.gameID(), game.gameName(),
+                    game.whiteUsername() != null ? game.whiteUsername() : "<no active player>",
+                    game.blackUsername() != null ? game.blackUsername() : "<no active player>"
+            ));
+        }
+
+        return output.toString();
     }
 
     public String joinGame(String... params) throws ResponseException {
-        if (params.length < 2) {
-            return "Error: not enough inputs";
+        if (params.length != 2) {
+            return "Error: invalid inputs. Format must be 'join <ID> [WHITE|BLACK]'";
         }
         System.out.println("Joining game... ");
-        int gameID = Integer.parseInt(params[0]);
-        var request = new JoinRequest(params[1].toUpperCase(),gameID);
-        System.out.println("join request is" + request);
+        int gameID;
+        try {
+            gameID = Integer.parseInt(params[0]);
+        } catch (NumberFormatException e) {
+            return "Error: invalid game ID. Please enter a number.";
+        }
+        String teamColor = params[1].toUpperCase();
+        var request = new JoinRequest(teamColor,gameID);
         server.join(request,authToken);
 
         var gameData = server.getGame(gameID, authToken);
@@ -155,11 +174,19 @@ public class ChessClient {
         if (params.length < 1) {
             return "Error: no game ID specified";
         }
+        if (params.length > 1) {
+            return "Error: too many inputs";
+        }
         System.out.println("Joining game as observer...");
-        int gameID = Integer.parseInt(params[0]);
+        int gameID;
+        try {
+            gameID = Integer.parseInt(params[0]);
+        } catch (NumberFormatException e) {
+            return "Error: invalid game ID. Please enter a number.";
+        }
         var gameData = server.getGame(gameID, authToken);
         printBoard(gameData.game(),true);
-        return "Now observing game " + gameID;
+        return "Now observing game " + gameID + " from White perspective";
     }
 
     public void printBoard(ChessGame game, boolean whitePerspective) {
