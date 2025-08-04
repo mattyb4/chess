@@ -24,6 +24,7 @@ public class ChessClient {
     private List<GameSumm> gameList = new ArrayList<>();
     private boolean isWhite;
     private ChessGame currentGame;
+    private boolean isObserver;
 
     public ChessClient(String serverUrl) {
         server = new ServerFacade(serverUrl);
@@ -202,6 +203,7 @@ public class ChessClient {
         isWhite = teamColor.equals("WHITE");
         printBoard(currentGame,isWhite);
         state = State.GAMEPLAY;
+        isObserver = false;
 
         System.out.println("Successfully joined game " + gameID + " as " + teamColor);
         System.out.println();
@@ -225,6 +227,7 @@ public class ChessClient {
         var gameData = server.getGame(gameID, authToken);
         printBoard(gameData.game(),true); //will always observe from White's perspective
         state = State.GAMEPLAY;
+        isObserver = true;
         return "Now observing game " + gameID + " from White perspective";
     }
 
@@ -289,6 +292,19 @@ public class ChessClient {
     }
 
     public String makeMove(String... params) {
+        if (isObserver) {
+            return "Error: cannot make move as an observer";
+        }
+        if (isWhite) {
+            if (currentGame.getTeamTurn() != ChessGame.TeamColor.WHITE) {
+                return "Error: not your turn";
+            }
+        }
+        else {
+            if (currentGame.getTeamTurn() != ChessGame.TeamColor.BLACK) {
+                return "Error: not your turn";
+            }
+        }
         return "makeMove not implemented";
     }
 
