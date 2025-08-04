@@ -219,6 +219,7 @@ public class ChessClient {
         }
         var gameData = server.getGame(gameID, authToken);
         printBoard(gameData.game(),true); //will always observe from White's perspective
+        state = State.GAMEPLAY;
         return "Now observing game " + gameID + " from White perspective";
     }
 
@@ -286,8 +287,7 @@ public class ChessClient {
     }
 
     public String resignGame() {
-        state = State.SIGNEDIN;
-        return "resign not implemented. Return to SIGNEDIN state.";
+        return "resign not implemented.";
     }
 
     public String possibleMoves(String... params) {
