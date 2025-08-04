@@ -10,7 +10,9 @@ import model.JoinRequest;
 import model.UserData;
 import ui.ServerFacade;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ChessClient {
     private final ServerFacade server;
@@ -19,6 +21,7 @@ public class ChessClient {
     private State state = State.SIGNEDOUT;
     private String authToken;
     private ChessGame game;
+    private List<GameSumm> gameList = new ArrayList<>();
 
     public ChessClient(String serverUrl) {
         server = new ServerFacade(serverUrl);
@@ -132,7 +135,7 @@ public class ChessClient {
     }
 
     public String listGames() throws ResponseException {
-        var gameList = server.listAllGames(authToken);
+        gameList = new ArrayList<>(server.listAllGames(authToken));
         StringBuilder output = new StringBuilder("Here is a list of all active games:\n");
 
         //this block of code reformats the JSON GameSumm list to look normal
@@ -153,16 +156,24 @@ public class ChessClient {
             return "Error: invalid inputs. Format must be 'join <ID> [WHITE|BLACK]'";
         }
         System.out.println("Joining game... ");
-        int gameID;
+
+        int index;
         try {
-            gameID = Integer.parseInt(params[0]);
+            index = Integer.parseInt(params[0]);
         } catch (NumberFormatException e) {
             return "Error: invalid game ID. Please enter a number.";
         }
+        if (index < 1 || index > gameList.size()) {
+            return "Error: no game number " + index + ". Use 'list' to see valid games.";
+        }
+        //get gameID from that game on the list
+        int gameID = gameList.get(index - 1).gameID();
         String teamColor = params[1].toUpperCase();
+
         var request = new JoinRequest(teamColor,gameID);
         server.join(request,authToken);
         var gameData = server.getGame(gameID, authToken);
+
         //print boards from both perspectives per phase 5 passoff instructions
         System.out.println("Printing board from White perspective");
         printBoard(gameData.game(),true);
