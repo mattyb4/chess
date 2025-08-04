@@ -131,6 +131,7 @@ public class ChessClient {
         }
         System.out.println("Creating game...");
         var gameData = server.create(params[0],authToken);
+        gameList = new ArrayList<>(server.listAllGames(authToken));
         return "Successfully created game called " + gameData.gameName();
     }
 
