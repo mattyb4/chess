@@ -138,8 +138,8 @@ public class ChessClient {
         //this block of code reformats the JSON GameSumm list to look normal
         int i = 1;
         for (GameSumm game : gameList) {
-            output.append(String.format("%d. Game ID: %d | Name: %s | White: %s | Black: %s%n",
-                    i++, game.gameID(), game.gameName(),
+            output.append(String.format("Game %d - Name: %s | White: %s | Black: %s%n",
+                    i++, game.gameName(),
                     game.whiteUsername() != null ? game.whiteUsername() : "<no active player>",
                     game.blackUsername() != null ? game.blackUsername() : "<no active player>"
             ));
@@ -203,7 +203,7 @@ public class ChessClient {
                 ChessPosition currentPos = new ChessPosition(row, col);
                 ChessPiece piece = board.getPiece(currentPos);
 
-                String squareColor = (row + col) % 2 != 0 ? EscapeSequences.SET_BG_COLOR_DARK_GREY : EscapeSequences.SET_BG_COLOR_LIGHT_GREY;
+                String squareColor = (row + col) % 2 != 0 ? EscapeSequences.SET_BG_COLOR_LIGHT_GREY : EscapeSequences.SET_BG_COLOR_DARK_GREY;
                 String pieceString = EscapeSequences.EMPTY;
                 if (piece != null) {
                     pieceString = getPieceSymbol(piece);
