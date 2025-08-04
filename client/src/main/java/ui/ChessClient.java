@@ -22,6 +22,8 @@ public class ChessClient {
     private String authToken;
     private ChessGame game;
     private List<GameSumm> gameList = new ArrayList<>();
+    private boolean isWhite;
+    private ChessGame currentGame;
 
     public ChessClient(String serverUrl) {
         server = new ServerFacade(serverUrl);
@@ -62,7 +64,7 @@ public class ChessClient {
             }
             else { //state is presumably GAMEPLAY
                 return switch (cmd) {
-                    case "redraw" -> redrawBoard();
+                    case "redraw" -> printBoard(currentGame,isWhite);
                     case "leave" -> leaveGame();
                     case "move" -> makeMove(params);
                     case "resign" -> resignGame();
@@ -195,10 +197,13 @@ public class ChessClient {
         var request = new JoinRequest(teamColor,gameID);
         server.join(request,authToken);
         var gameData = server.getGame(gameID, authToken);
+        currentGame = gameData.game();
         //print board from your team's perspective
-        printBoard(gameData.game(),true);
+        isWhite = teamColor.equals("WHITE");
+        printBoard(currentGame,isWhite);
         state = State.GAMEPLAY;
-        System.out.println("Successfully joined game " + gameID);
+
+        System.out.println("Successfully joined game " + gameID + " as " + teamColor);
         System.out.println();
         return helpPrompt();
     }
@@ -223,7 +228,7 @@ public class ChessClient {
         return "Now observing game " + gameID + " from White perspective";
     }
 
-    public void printBoard(ChessGame game, boolean whitePerspective) {
+    public String printBoard(ChessGame game, boolean whitePerspective) {
         var board = game.getBoard();
         //if the player is White team, print row numbers in descending order - otherwise print the other way
         int[] rows = whitePerspective ? new int[]{8,7,6,5,4,3,2,1} : new int[]{1,2,3,4,5,6,7,8};
@@ -246,6 +251,7 @@ public class ChessClient {
             System.out.print(EscapeSequences.RESET_BG_COLOR + " " + row + "\n");
         }
         printColumnLabels(cols); //print the column letters on the bottom of the board
+        return "current game state";
     }
 
     //created this method to simplify placing proper pieces on the board from EscapeSequences
