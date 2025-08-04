@@ -30,7 +30,8 @@ public class ChessClient {
 
     public enum State {
         SIGNEDOUT,
-        SIGNEDIN
+        SIGNEDIN,
+        GAMEPLAY
     }
 
     public String eval(String input) {
@@ -47,7 +48,7 @@ public class ChessClient {
                     default -> "Invalid input - type 'help' to see list of valid inputs";
                 };
             }
-            else {
+            else if (state == State.SIGNEDIN) {
                 return switch (cmd) {
                     case "logout" -> logout();
                     case "create" -> createGame(params);
@@ -55,6 +56,17 @@ public class ChessClient {
                     case "join" -> joinGame(params);
                     case "observe" -> observeGame(params);
                     case "quit" -> "quit";
+                    case "help" -> helpPrompt();
+                    default -> "Invalid input - type 'help' to see list of valid inputs";
+                };
+            }
+            else { //state is presumably GAMEPLAY
+                return switch (cmd) {
+                    case "redraw" -> redrawBoard();
+                    case "leave" -> leaveGame();
+                    case "move" -> makeMove(params);
+                    case "resign" -> resignGame();
+                    case "highlight" -> possibleMoves(params);
                     case "help" -> helpPrompt();
                     default -> "Invalid input - type 'help' to see list of valid inputs";
                 };
@@ -86,7 +98,7 @@ public class ChessClient {
             System.out.println("quit - quit program");
             System.out.println("help - list possible commands");
         }
-        else { //state is presumably SIGNEDIN
+        else if (state == State.SIGNEDIN){
             System.out.println("Here is a list of newly available commands:");
             System.out.println("create <NAME> - create game with given name");
             System.out.println("list - list all current games");
@@ -94,6 +106,15 @@ public class ChessClient {
             System.out.println("observe <ID> - observe game with given ID");
             System.out.println("logout - logout of program");
             System.out.println("quit - quit program");
+            System.out.println("help - list possible commands");
+        }
+        else { //state is presumably GAMEPLAY
+            System.out.println("Here is a list of gameplay commands:");
+            System.out.println("redraw - redraws chessboard");
+            System.out.println("leave - leaves game");
+            System.out.println("move - input what move you want to make");
+            System.out.println("resign - forfeit game");
+            System.out.println("highlight - highlights legal moves for given piece");
             System.out.println("help - list possible commands");
         }
         return "What would you like to do?";
@@ -174,13 +195,12 @@ public class ChessClient {
         var request = new JoinRequest(teamColor,gameID);
         server.join(request,authToken);
         var gameData = server.getGame(gameID, authToken);
-
-        //print boards from both perspectives per phase 5 passoff instructions
-        System.out.println("Printing board from White perspective");
+        //print board from your team's perspective
         printBoard(gameData.game(),true);
-        System.out.println("Printing board from Black perspective");
-        printBoard(gameData.game(),false);
-        return "Successfully joined game " + gameID;
+        state = State.GAMEPLAY;
+        System.out.println("Successfully joined game " + gameID);
+        System.out.println();
+        return helpPrompt();
     }
 
     public String observeGame(String... params) throws ResponseException {
@@ -250,4 +270,27 @@ public class ChessClient {
         System.out.println();
     }
 
+    //GAMEPLAY methods
+
+    public String redrawBoard() {
+        return "redraw not implemented";
+    }
+
+    public String leaveGame() {
+        state = State.SIGNEDIN;
+        return "leaveGame not implemented. Returned to SIGNEDIN state.";
+    }
+
+    public String makeMove(String... params) {
+        return "makeMove not implemented";
+    }
+
+    public String resignGame() {
+        state = State.SIGNEDIN;
+        return "resign not implemented. Return to SIGNEDIN state.";
+    }
+
+    public String possibleMoves(String... params) {
+        return "highlight not implemented";
+    }
 }
