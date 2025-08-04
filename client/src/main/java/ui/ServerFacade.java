@@ -52,6 +52,10 @@ public class ServerFacade {
         return makeRequest("GET", "/game/" + gameID, null, GameData.class, authToken);
     }
 
+    public void leave(String authToken, JoinRequest request) throws ResponseException {
+        makeRequest("DELETE", "/game", request, Object.class, authToken);
+    }
+
     private <T> T makeRequest(String method, String path, Object request, Type responseType, String authToken) throws ResponseException {
         try {
             URL url = (new URI(serverUrl + path)).toURL();

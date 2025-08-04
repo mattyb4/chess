@@ -101,4 +101,20 @@ public class GameHandler {
             return new Gson().toJson(new ErrorHandler("Error: invalid game ID"));
         }
     }
+
+    public String leaveGame(Request req, Response res) throws DataAccessException {
+        try {
+            var serializer = new Gson();
+            JoinRequest data = serializer.fromJson(req.body(), JoinRequest.class);
+            service.leaveGame(data.gameID(), data.playerColor(), req.headers("Authorization"));
+            res.status(200);
+            return "{}";
+        } catch (InvalidUserException e) {
+            res.status(401);
+            return new Gson().toJson(new ErrorHandler("Error: unauthorized"));
+        } catch (NumberFormatException e) {
+            res.status(400);
+            return new Gson().toJson(new ErrorHandler("Error: invalid game ID"));
+        }
+    }
 }

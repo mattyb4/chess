@@ -88,6 +88,27 @@ public class GameService {
         return game;
     }
 
+    public void leaveGame(int gameID, String playerColor, String authToken) throws DataAccessException, InvalidUserException {
+        AuthData authData = authDAO.getAuth(authToken);
+        String newWhiteUsername = "";
+        String newBlackUsername = "";
+        if(authData == null) {
+            throw new InvalidUserException("Error: unauthorized");
+        }
+        GameData game = gameDAO.getGame(gameID);
+
+        if(playerColor.equals("WHITE")) {
+            newWhiteUsername = null;
+            newBlackUsername = gameDAO.getUsername("BLACK",gameID);
+        }
+        if(playerColor.equals("BLACK")) {
+            newBlackUsername = null;
+            newWhiteUsername = gameDAO.getUsername("WHITE", gameID);
+        }
+        var updatedGame = new GameData(gameID, newWhiteUsername, newBlackUsername, game.gameName(), game.game());
+        gameDAO.updateGame(updatedGame);
+    }
+
     public void clear() throws DataAccessException {
         gameDAO.clear();
     }

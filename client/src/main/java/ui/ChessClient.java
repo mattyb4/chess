@@ -25,6 +25,8 @@ public class ChessClient {
     private boolean isWhite;
     private ChessGame currentGame;
     private boolean isObserver;
+    private Integer currentID;
+    private String currentPlayerColor;
 
     public ChessClient(String serverUrl) {
         server = new ServerFacade(serverUrl);
@@ -192,12 +194,13 @@ public class ChessClient {
             return "Error: no game number " + index + ". Use 'list' to see valid games.";
         }
         //get gameID from that game on the list
-        int gameID = gameList.get(index - 1).gameID();
-        String teamColor = params[1].toUpperCase();
+        currentID = gameList.get(index - 1).gameID();
 
-        var request = new JoinRequest(teamColor,gameID);
+        String teamColor = params[1].toUpperCase();
+        currentPlayerColor = teamColor;
+        var request = new JoinRequest(teamColor,currentID);
         server.join(request,authToken);
-        var gameData = server.getGame(gameID, authToken);
+        var gameData = server.getGame(currentID, authToken);
         currentGame = gameData.game();
         //print board from your team's perspective
         isWhite = teamColor.equals("WHITE");
@@ -205,7 +208,7 @@ public class ChessClient {
         state = State.GAMEPLAY;
         isObserver = false;
 
-        System.out.println("Successfully joined game " + gameID + " as " + teamColor);
+        System.out.println("Successfully joined game " + currentID + " as " + teamColor);
         System.out.println();
         return helpPrompt();
     }
@@ -286,9 +289,16 @@ public class ChessClient {
         return "redraw not implemented";
     }
 
-    public String leaveGame() {
+    public String leaveGame() throws ResponseException {
+        if (currentID == null || currentPlayerColor == null) {
+            return "Error: not currently in a game";
+        }
         state = State.SIGNEDIN;
-        return "leaveGame not implemented. Returned to SIGNEDIN state.";
+        var request = new JoinRequest(currentPlayerColor, currentID);
+        server.leave(authToken, request);
+        currentID = null;
+        currentPlayerColor = null;
+        return "Successfully left game";
     }
 
     public String makeMove(String... params) {
