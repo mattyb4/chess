@@ -293,15 +293,19 @@ public class ChessClient {
         if (currentID == null || currentPlayerColor == null) {
             return "Error: not currently in a game";
         }
-        state = State.SIGNEDIN;
         var request = new JoinRequest(currentPlayerColor, currentID);
         server.leave(authToken, request);
+        state = State.SIGNEDIN;
         currentID = null;
         currentPlayerColor = null;
         return "Successfully left game";
     }
 
     public String makeMove(String... params) {
+        System.out.println("params[0] is " + params[0]);
+        if(params.length < 2 || params.length > 3 || !params[0].toLowerCase().matches("^[a-h][1-8]$") || !params[1].toLowerCase().matches("^[a-h][1-8]$")) {
+            return "Error: invalid inputs. Format must be 'move <start> <end> <promotionpiece(optional)>";
+        }
         if (isObserver) {
             return "Error: cannot make move as an observer";
         }

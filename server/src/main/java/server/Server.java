@@ -21,11 +21,15 @@ public class Server {
     GameHandler gameHandler = new GameHandler(gameService);
     ClearHandler clearHandler = new ClearHandler(userService, gameService);
 
+    private final WebSocketHandler webSocketHandler;
+    public Server() {
+        webSocketHandler = new WebSocketHandler();
+    }
     public int run(int desiredPort) {
         Spark.port(desiredPort);
 
         Spark.staticFiles.location("web");
-
+        Spark.webSocket("/ws", webSocketHandler);
         // Register your endpoints and handle exceptions here.
         Spark.post("/user", userHandler::register);
         Spark.delete("/db", clearHandler::clear);
